@@ -16,7 +16,7 @@ public class BotController {
         this.verify = verify;
     }
 
-    @GetMapping("/webhooks")
+    @GetMapping("/webhook")
     public ResponseEntity<String> start(@RequestParam("hub.mode")String subscribe,
                         @RequestParam("hub.verify_token")String token,
                         @RequestParam("hub.challenge")String response){
