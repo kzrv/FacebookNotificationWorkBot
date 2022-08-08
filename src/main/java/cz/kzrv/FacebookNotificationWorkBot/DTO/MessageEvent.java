@@ -1,4 +1,4 @@
-package cz.kzrv.FacebookNotificationWorkBot.models;
+package cz.kzrv.FacebookNotificationWorkBot.DTO;
 
 public class MessageEvent {
     private String mid; // id of message

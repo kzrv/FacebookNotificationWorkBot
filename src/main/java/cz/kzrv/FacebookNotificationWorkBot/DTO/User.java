@@ -1,4 +1,4 @@
-package cz.kzrv.FacebookNotificationWorkBot.models;
+package cz.kzrv.FacebookNotificationWorkBot.DTO;
 
 import java.util.Date;
 import java.util.List;

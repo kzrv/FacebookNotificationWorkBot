@@ -1,4 +1,4 @@
-package cz.kzrv.FacebookNotificationWorkBot.models.user;
+package cz.kzrv.FacebookNotificationWorkBot.DTO.user;
 
 public class Recipient {
     private long id;

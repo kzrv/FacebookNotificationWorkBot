@@ -1,6 +1,6 @@
 package cz.kzrv.FacebookNotificationWorkBot.controllers;
 
-import cz.kzrv.FacebookNotificationWorkBot.models.Event;
+import cz.kzrv.FacebookNotificationWorkBot.DTO.Event;
 import cz.kzrv.FacebookNotificationWorkBot.services.Verify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

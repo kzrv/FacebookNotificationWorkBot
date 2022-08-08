@@ -1,7 +1,7 @@
-package cz.kzrv.FacebookNotificationWorkBot.models;
+package cz.kzrv.FacebookNotificationWorkBot.DTO;
 
-import cz.kzrv.FacebookNotificationWorkBot.models.user.Recipient;
-import cz.kzrv.FacebookNotificationWorkBot.models.user.Sender;
+import cz.kzrv.FacebookNotificationWorkBot.DTO.user.Recipient;
+import cz.kzrv.FacebookNotificationWorkBot.DTO.user.Sender;
 
 import java.util.Date;
 
