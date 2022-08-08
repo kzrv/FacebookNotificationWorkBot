@@ -18,9 +18,10 @@ import org.springframework.web.client.RestTemplate;
 public class SendMessage {
     @Value("${bot.token}")
     private String token;
-    private final String URL= "https://graph.facebook.com/v14.0/me/messages?access_token="+token;
+    private String URL= "https://graph.facebook.com/v14.0/me/messages?access_token=";
 
     public void sending(String recipient,String msg, MessageType type){
+        URL+=token;
         RestTemplate restTemplate = new RestTemplate();
         MessageResponse messageResponse = new MessageResponse();
         messageResponse.setRecipient(new Recipient(recipient));

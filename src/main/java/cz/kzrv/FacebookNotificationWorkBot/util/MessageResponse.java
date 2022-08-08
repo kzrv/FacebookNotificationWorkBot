@@ -9,10 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MessageResponse {
-    private Recipient recipient;
-    private MessageEvent message;
     @JsonFormat(pattern = "messaging_type")
     private String type;
+    private Recipient recipient;
+    private MessageEvent message;
+
 
     public MessageResponse() {
     }
