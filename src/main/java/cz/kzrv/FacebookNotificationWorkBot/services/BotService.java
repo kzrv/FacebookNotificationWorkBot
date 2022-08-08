@@ -33,6 +33,7 @@ public class BotService {
 
     public void getMessageFromUser(Message message) {
         Person person = botRepository.findByCode(message.getMsg());
+        System.out.println(message.getSender());
         if(person!=null && !person.getActivated()){
             person.setActivated(true);
             person.setFacebookId(message.getSender());
