@@ -7,6 +7,10 @@ public class MessageEvent {
     public MessageEvent() {
     }
 
+    public MessageEvent(String text) {
+        this.text = text;
+    }
+
     public String getMid() {
         return mid;
     }

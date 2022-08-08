@@ -1,9 +1,10 @@
 package cz.kzrv.FacebookNotificationWorkBot.services;
 
 
-import cz.kzrv.FacebookNotificationWorkBot.BotRepository;
+import cz.kzrv.FacebookNotificationWorkBot.repository.BotRepository;
 import cz.kzrv.FacebookNotificationWorkBot.models.Message;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
+import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -17,10 +18,12 @@ public class BotService {
     @Value("${bot.token}")
     private String token;
     private final BotRepository botRepository;
+    private final SendMessage sendMessage;
 
     @Autowired
-    public BotService(BotRepository botRepository) {
+    public BotService(BotRepository botRepository, SendMessage sendMessage) {
         this.botRepository = botRepository;
+        this.sendMessage = sendMessage;
     }
 
     public boolean controll(String tokenCheck){
@@ -29,14 +32,22 @@ public class BotService {
     }
 
     public void getMessageFromUser(Message message) {
-        Optional<Person> prsn = botRepository.findByCode(message.getMsg());
-        if(prsn.isPresent() && !prsn.get().getActivated()){
-            Person person = prsn.get();
+        Person person = botRepository.findByCode(message.getMsg());
+        if(person!=null && !person.getActivated()){
             person.setActivated(true);
             person.setFacebookId(message.getSender());
             botRepository.save(person);
-            System.out.println("OK");
+            sendMessage.sending(person.getFacebookId(),
+                    "You was successfully registered",
+                    MessageType.RESPONSE
+            );
         }
-        System.out.println("WRONG");
+        else {
+            sendMessage.sending(message.getSender(),
+                    "Command is invalid or you're already registered",
+                    MessageType.RESPONSE
+            );
+        }
+
     }
 }
