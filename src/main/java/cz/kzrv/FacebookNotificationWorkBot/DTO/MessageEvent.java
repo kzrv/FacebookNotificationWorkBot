@@ -1,5 +1,9 @@
 package cz.kzrv.FacebookNotificationWorkBot.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MessageEvent {
     private String mid; // id of message
     private String text;
