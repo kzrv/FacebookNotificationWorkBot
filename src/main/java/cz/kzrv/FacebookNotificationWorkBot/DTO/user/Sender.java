@@ -1,16 +1,16 @@
 package cz.kzrv.FacebookNotificationWorkBot.DTO.user;
 
 public class Sender {
-    private long id;
+    private String id;
 
     public Sender() {
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 }
