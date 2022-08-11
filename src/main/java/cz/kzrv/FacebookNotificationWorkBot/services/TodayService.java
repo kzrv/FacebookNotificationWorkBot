@@ -60,6 +60,7 @@ public class TodayService {
         String[] split = timeTable.getBegin().split(":");
         int hour = Integer.parseInt(String.valueOf(LocalTime.now().getHour()+LocalTime.now().getMinute()));
         int start = Integer.parseInt(split[0]+split[1]);
-        return start - hour == 1 && !todayShift.getSent();
+        int fin = start - hour;
+        return fin < 100 && fin>0 && !todayShift.getSent();
     }
 }
