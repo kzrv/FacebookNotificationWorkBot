@@ -11,6 +11,7 @@ import cz.kzrv.FacebookNotificationWorkBot.util.Month;
 import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class SheetService {
         this.todayService = todayService;
         this.tomorrowShift = tomorrowShift;
     }
-
+    @Scheduled(cron = "${one_a_day}")
     public void getSpreadsheetValues() throws IOException, GeneralSecurityException {
         todayService.deleteAll();
         Sheets sheetsService = googleAuthorizationConfig.getSheetService();

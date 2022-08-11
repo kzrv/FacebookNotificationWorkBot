@@ -6,7 +6,7 @@ public enum TimeTable {
     SHIFT3("11:00","15:00"),
     SHIFT4("11:00","14:00"),
     SHIFT5("16:30","20:00"),
-    SHIFT6("14:30","23:00");
+    SHIFT6("16:30","23:00");
 
     private String begin;
     private String end;

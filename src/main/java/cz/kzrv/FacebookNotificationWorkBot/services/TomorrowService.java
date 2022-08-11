@@ -6,6 +6,7 @@ import cz.kzrv.FacebookNotificationWorkBot.repository.TomorrowRepository;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class TomorrowService {
     public void deleteAll(){
         tomorrowRepository.deleteAll();
     }
+    @Scheduled(cron = "${one_a_day_after}")
     public void sendNotificationForTomorrow(){
         List<TomorrowShift> list = tomorrowRepository.findAll();
         for(TomorrowShift shift : list){
