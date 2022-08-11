@@ -55,7 +55,7 @@ public class SheetService {
                for(int i = 0 ; i<row.size();i++){
                   if(row.get(i)!=null){
                       Person person = botService.findByName(row.get(i).toString());
-                      if(person!=null){
+                      if(person!=null && person.getActivated()){
                           todayService.addShift(person, TimeTable.getById(i));
                       }
                   }
@@ -78,7 +78,7 @@ public class SheetService {
                 for(int i = 0 ; i<row.size();i++){
                     if(row.get(i)!=null){
                         Person person = botService.findByName(row.get(i).toString());
-                        if(person!=null){
+                        if(person!=null && person.getActivated()){
                             tomorrowShift.addShift(person, TimeTable.getById(i));
                         }
                     }

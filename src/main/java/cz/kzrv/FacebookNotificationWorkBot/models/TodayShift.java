@@ -23,4 +23,6 @@ public class TodayShift{
     @Enumerated(value = EnumType.ORDINAL)
     @Column(name = "shift")
     private TimeTable timeTable;
+    @Column(name="sent")
+    private Boolean sent;
 }

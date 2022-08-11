@@ -1,25 +1,25 @@
 package cz.kzrv.FacebookNotificationWorkBot.util;
 
 public enum TimeTable {
-    SHIFT1(1,"10:30","16:00"),
-    SHIFT2(2,"16:30","23:00"),
-    SHIFT3(3,"11:00","15:00"),
-    SHIFT4(4,"11:00","14:00"),
-    SHIFT5(5,"16:30","20:00"),
-    SHIFT6(6,"10:30","23:00");
+    SHIFT1("10:30","16:00"),
+    SHIFT2("16:30","23:00"),
+    SHIFT3("11:00","15:00"),
+    SHIFT4("11:00","14:00"),
+    SHIFT5("16:30","20:00"),
+    SHIFT6("14:30","23:00");
 
     private String begin;
     private String end;
     private int id;
 
-    TimeTable(int id,String begin, String end) {
+    TimeTable(String begin, String end) {
         this.id = id;
         this.begin = begin;
         this.end = end;
     }
 
     public static TimeTable getById(int id){
-        return TimeTable.values()[id+1];
+        return TimeTable.values()[id];
     }
 
     public String getBegin() {
