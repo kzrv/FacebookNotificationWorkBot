@@ -31,6 +31,7 @@ public class TodayService {
         TodayShift todayShift = new TodayShift();
         todayShift.setTimeTable(timeTable);
         todayShift.setOwner(person);
+        todayShift.setSent(false);
         todayShiftRepository.save(todayShift);
     }
     public void deleteAll(){
