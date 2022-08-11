@@ -58,9 +58,8 @@ public class TodayService {
 
     private boolean oneHour(TimeTable timeTable, TodayShift todayShift) {
         String[] split = timeTable.getBegin().split(":");
-        LocalTime localTime = LocalTime.now();
-        int hour = localTime.getHour();
-        int start = Integer.parseInt(split[0]);
+        int hour = Integer.parseInt(String.valueOf(LocalTime.now().getHour()+LocalTime.now().getMinute()));
+        int start = Integer.parseInt(split[0]+split[1]);
         return start - hour == 1 && !todayShift.getSent();
     }
 }
