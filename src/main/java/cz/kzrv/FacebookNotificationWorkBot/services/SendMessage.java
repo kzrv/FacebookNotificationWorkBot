@@ -18,8 +18,6 @@ import org.springframework.web.client.RestTemplate;
 public class SendMessage {
     @Value("${bot.token}")
     private String token;
-
-
     public void sending(String recipient,String msg, MessageType type){
         String URL = "https://graph.facebook.com/v14.0/me/messages?access_token="+token;
         RestTemplate restTemplate = new RestTemplate();
@@ -37,7 +35,5 @@ public class SendMessage {
             System.out.println("!!!!!!!!EXCEPTION WHILE SENDING RESPONSE!!!!!!!!!!");
             System.out.println(e.getLocalizedMessage());
         }
-
-
     }
 }

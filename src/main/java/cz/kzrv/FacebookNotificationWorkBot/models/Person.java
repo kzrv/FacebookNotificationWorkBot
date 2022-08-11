@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Entity
 @Table(name = "person")
-public class Person {
+public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -29,4 +31,8 @@ public class Person {
     @NotNull
     @Column(name="activated_code")
     private String code;
+    @OneToMany(mappedBy = "owner")
+    private List<TodayShift> today;
+    @OneToMany(mappedBy = "owner")
+    private List<TomorrowShift> tomorrow;
 }

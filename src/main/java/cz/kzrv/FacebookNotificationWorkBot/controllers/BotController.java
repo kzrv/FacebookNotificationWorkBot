@@ -1,7 +1,7 @@
 package cz.kzrv.FacebookNotificationWorkBot.controllers;
 
 import cz.kzrv.FacebookNotificationWorkBot.DTO.Event;
-import cz.kzrv.FacebookNotificationWorkBot.models.Message;
+import cz.kzrv.FacebookNotificationWorkBot.util.Message;
 import cz.kzrv.FacebookNotificationWorkBot.services.BotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

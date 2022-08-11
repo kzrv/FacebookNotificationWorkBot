@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface BotRepository extends JpaRepository<Person,Integer> {
     Person findByCode(String code);
+    Person findByName(String name);
 }

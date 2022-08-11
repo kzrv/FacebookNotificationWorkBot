@@ -1,0 +1,47 @@
+package cz.kzrv.FacebookNotificationWorkBot.services;
+
+import cz.kzrv.FacebookNotificationWorkBot.models.Person;
+import cz.kzrv.FacebookNotificationWorkBot.models.TomorrowShift;
+import cz.kzrv.FacebookNotificationWorkBot.repository.TomorrowRepository;
+import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
+import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class TomorrowService {
+    private final TomorrowRepository tomorrowRepository;
+    private final SendMessage sendMessage;
+
+    @Autowired
+    public TomorrowService(TomorrowRepository tomorrowRepository, SendMessage sendMessage) {
+        this.tomorrowRepository = tomorrowRepository;
+        this.sendMessage = sendMessage;
+    }
+    public void addShift(Person person, TimeTable timeTable){
+        TomorrowShift tomorrowShift = new TomorrowShift();
+        tomorrowShift.setTimeTable(timeTable);
+        tomorrowShift.setOwner(person);
+        tomorrowRepository.save(tomorrowShift);
+    }
+    public void deleteAll(){
+        tomorrowRepository.deleteAll();
+    }
+    public void sendNotificationForTomorrow(){
+        List<TomorrowShift> list = tomorrowRepository.findAll();
+        for(TomorrowShift shift : list){
+            if(shift.getOwner().getFacebookId()!=null){
+                TimeTable timeTable = shift.getTimeTable();
+                String msg = "Budeš zítra mít směnu od "+
+                        timeTable.getBegin() +
+                        " do " + timeTable.getEnd();
+                sendMessage.sending(
+                        shift.getOwner().getFacebookId(),
+                        msg,
+                        MessageType.CONFIRMED_EVENT_UPDATE);
+            }
+        }
+    }
+}

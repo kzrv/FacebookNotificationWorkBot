@@ -2,15 +2,13 @@ package cz.kzrv.FacebookNotificationWorkBot.services;
 
 
 import cz.kzrv.FacebookNotificationWorkBot.repository.BotRepository;
-import cz.kzrv.FacebookNotificationWorkBot.models.Message;
+import cz.kzrv.FacebookNotificationWorkBot.util.Message;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -29,6 +27,9 @@ public class BotService {
     public boolean controll(String tokenCheck){
         if (token.equals(tokenCheck)) return true;
         return false;
+    }
+    public Person findByName(String name){
+        return botRepository.findByName(name);
     }
 
     public void getMessageFromUser(Message message) {

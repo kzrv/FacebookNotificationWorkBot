@@ -1,4 +1,4 @@
-package cz.kzrv.FacebookNotificationWorkBot.models;
+package cz.kzrv.FacebookNotificationWorkBot.util;
 
 import lombok.Getter;
 import lombok.Setter;
