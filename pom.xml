@@ -80,6 +80,11 @@
 			<artifactId>google-api-services-sheets</artifactId>
 			<version>v4-rev493-1.23.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.10.1</version>
+		</dependency>
 
 
 
