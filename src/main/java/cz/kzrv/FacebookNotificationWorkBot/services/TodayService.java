@@ -16,14 +16,14 @@ import java.util.List;
 public class TodayService {
 
     private final TodayShiftRepository todayShiftRepository;
-    private final BotService botService;
-    private final SendMessage sendMessage;
+    private final PeopleService peopleService;
+    private final MessageService messageService;
 
     @Autowired
-    public TodayService(TodayShiftRepository todayShiftRepository, BotService botService, SendMessage sendMessage) {
+    public TodayService(TodayShiftRepository todayShiftRepository, PeopleService peopleService, MessageService messageService) {
         this.todayShiftRepository = todayShiftRepository;
-        this.botService = botService;
-        this.sendMessage = sendMessage;
+        this.peopleService = peopleService;
+        this.messageService = messageService;
     }
 
     public void addShift(Person person, TimeTable timeTable) {
@@ -48,7 +48,7 @@ public class TodayService {
                 String msg = "Dneska od " +
                         timeTable.getBegin() +
                         " do " + timeTable.getEnd() + " budeš mít směnu";
-                sendMessage.sending(
+                messageService.sending(
                         shift.getOwner().getFacebookId(),
                         msg,
                         MessageType.CONFIRMED_EVENT_UPDATE);
@@ -58,7 +58,8 @@ public class TodayService {
 
     private boolean oneHour(TimeTable timeTable, TodayShift todayShift) {
         String[] split = timeTable.getBegin().split(":");
-        int hour = Integer.parseInt(String.valueOf(LocalTime.now().getHour()+LocalTime.now().getMinute()));
+        String str = String.valueOf(LocalTime.now().getHour())+String.valueOf(LocalTime.now().getMinute());
+        int hour = Integer.parseInt(str);
         int start = Integer.parseInt(split[0]+split[1]);
         int fin = start - hour;
         return fin < 100 && fin>0 && !todayShift.getSent();

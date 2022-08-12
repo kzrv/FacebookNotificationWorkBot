@@ -1,5 +1,6 @@
 package cz.kzrv.FacebookNotificationWorkBot.models;
 
+import cz.kzrv.FacebookNotificationWorkBot.dates.StatesOfBot;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +32,18 @@ public class Person implements Serializable {
     @NotNull
     @Column(name="activated_code")
     private String code;
+    @Column(name="admin")
+    private Boolean admin;
+    @Column(name="state")
+    @Enumerated(value = EnumType.STRING)
+    private StatesOfBot statesOfBot;
     @OneToMany(mappedBy = "owner")
     private List<TodayShift> today;
     @OneToMany(mappedBy = "owner")
     private List<TomorrowShift> tomorrow;
+
+    @Override
+    public String toString() {
+        return name+" : Facebook ID: " + facebookId + "Activated: "+activated + "Activated code: "+ code;
+    }
 }

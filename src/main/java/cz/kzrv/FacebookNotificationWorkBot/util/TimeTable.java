@@ -10,10 +10,8 @@ public enum TimeTable {
 
     private String begin;
     private String end;
-    private int id;
 
     TimeTable(String begin, String end) {
-        this.id = id;
         this.begin = begin;
         this.end = end;
     }
@@ -38,12 +36,5 @@ public enum TimeTable {
         this.end = end;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
 }

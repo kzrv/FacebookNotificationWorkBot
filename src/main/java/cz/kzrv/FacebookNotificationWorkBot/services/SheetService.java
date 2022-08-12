@@ -6,7 +6,6 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import cz.kzrv.FacebookNotificationWorkBot.config.GoogleAuthorizationConfig;
 
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
-import cz.kzrv.FacebookNotificationWorkBot.models.TomorrowShift;
 import cz.kzrv.FacebookNotificationWorkBot.util.Month;
 import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +29,14 @@ public class SheetService {
 
 
     private final GoogleAuthorizationConfig googleAuthorizationConfig;
-    private final BotService botService;
+    private final PeopleService peopleService;
     private final TodayService todayService;
     private final TomorrowService tomorrowShift;
 
     @Autowired
-    public SheetService(GoogleAuthorizationConfig googleAuthorizationConfig, BotService botService, TodayService todayService, TomorrowService tomorrowShift) {
+    public SheetService(GoogleAuthorizationConfig googleAuthorizationConfig, PeopleService peopleService, TodayService todayService, TomorrowService tomorrowShift) {
         this.googleAuthorizationConfig = googleAuthorizationConfig;
-        this.botService = botService;
+        this.peopleService = peopleService;
         this.todayService = todayService;
         this.tomorrowShift = tomorrowShift;
     }
@@ -55,7 +54,7 @@ public class SheetService {
             for (List<Object> row : values) {
                for(int i = 0 ; i<row.size();i++){
                   if(row.get(i)!=null){
-                      Person person = botService.findByName(row.get(i).toString());
+                      Person person = peopleService.findByName(row.get(i).toString());
                       if(person!=null && person.getActivated()){
                           todayService.addShift(person, TimeTable.getById(i));
                       }
@@ -78,7 +77,7 @@ public class SheetService {
             for (List<Object> row : values) {
                 for(int i = 0 ; i<row.size();i++){
                     if(row.get(i)!=null){
-                        Person person = botService.findByName(row.get(i).toString());
+                        Person person = peopleService.findByName(row.get(i).toString());
                         if(person!=null && person.getActivated()){
                             tomorrowShift.addShift(person, TimeTable.getById(i));
                         }
