@@ -22,29 +22,30 @@ public class MessageHandler {
 
     public void getCommand(Person person, String msg) {
         switch (msg){
-            case "/add" -> {
+            case "/add" :
                     messageService.sending(
                             person.getFacebookId(),
                             "Napiště prosím jméno človeka,ktereho chcete smazat(Stejně jako v bude zapsan v tabulke)",
                             MessageType.RESPONSE);
                     person.setStatesOfBot(StatesOfBot.ADD_NEW_USER);
                     peopleService.save(person);
-            }
-            case "/delete" -> {
+                    break;
+            case "/delete" :
                 messageService.sending(
                         person.getFacebookId(),
                         "Napiště prosím jméno človeka,ktereho chcete smazat(velkými písmeny)",
                         MessageType.RESPONSE);
                 person.setStatesOfBot(StatesOfBot.DELETE_USER);
                 peopleService.save(person);
-            }
-            case "/lide" -> {
+                break;
+
+            case "/lide" :
                 List<Person> list = peopleService.getAllPeople();
                 list.forEach(s->messageService.sending(person.getFacebookId(),
                         list.toString(),
                         MessageType.RESPONSE));
-            }
-            case "/help" -> {
+                break;
+            case "/help" :
                 String msg1 = "Příkazy: \n"+
                         "/add - přidat nového člověka\n"+
                         "/delete - smazat osobu\n"+
@@ -52,12 +53,12 @@ public class MessageHandler {
                 messageService.sending(person.getFacebookId(),
                         msg1,
                         MessageType.RESPONSE);
-            }
-            default -> {
+                break;
+            default :
                 messageService.sending(person.getFacebookId(),
                         "Neexistující příkaz",
                         MessageType.RESPONSE);
-            }
+                break;
         }
     }
     public void handleResponse(){
