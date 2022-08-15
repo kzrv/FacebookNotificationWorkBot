@@ -8,6 +8,7 @@ import cz.kzrv.FacebookNotificationWorkBot.config.GoogleAuthorizationConfig;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.util.Month;
 import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable;
+import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,7 +26,7 @@ public class SheetService {
 
     @Value("${spreadsheet.id}")
     private String spreadSheetId;
-    private final int rowOfDate = 1; // this variable returns us the number of lines before the beginning of the list with shifts
+    private final int rowOfDate = 4; // this variable returns us the number of lines before the beginning of the list with shifts
 
 
     private final GoogleAuthorizationConfig googleAuthorizationConfig;
@@ -76,10 +77,15 @@ public class SheetService {
         } else {
             for (List<Object> row : values) {
                 for(int i = 0 ; i<row.size();i++){
-                    if(row.get(i)!=null){
-                        Person person = peopleService.findByName(row.get(i).toString());
-                        if(person!=null && person.getActivated()){
-                            tomorrowShift.addShift(person, TimeTable.getById(i));
+                    String name =row.get(i).toString();
+                    if(name!=null){
+                        if (name.contains("/")) {
+                            String[] nameArray = name.split("/");
+                            if (!nameArray[0].equals("")) {
+                                callByName(nameArray[0], i,true);
+                            } else if (!nameArray[1].equals("")) {
+                                callByName(nameArray[1],i,false);
+                            }
                         }
                     }
                 }
@@ -95,7 +101,15 @@ public class SheetService {
         int day = Integer.parseInt(split[0])+rowOfDate;
         int month = Integer.parseInt(split[1]);
         String currenMonth = Month.getMonthName(month);
-        return currenMonth+"!B"+day+":G"+day;
+        return currenMonth+"!B"+day+":I"+day;
+    }
+    private void callByName(String name,int i,boolean shift){
+        Person person = peopleService.findByName(name.trim());
+        if(person!=null && person.getActivated()){
+            if(shift)tomorrowShift.addShift(person, TimeTable.getById(i));
+            else tomorrowShift.addShift(person, TimeTable2.getById(i));
+        }
+
     }
 }
 

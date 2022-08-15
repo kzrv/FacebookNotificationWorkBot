@@ -71,6 +71,7 @@ public class MessageHandler{
                     personNew.setAdmin(false);
                     personNew.setCode(Generator.uniqueCode(msg));
                     personNew.setName(msg);
+                    personNew.setStatesOfBot(StatesOfBot.DEFAULT);
                     messageService.sending(
                             person.getFacebookId(),
                             "Uživatel byl úspěšně přidán",

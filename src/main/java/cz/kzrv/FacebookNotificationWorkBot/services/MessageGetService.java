@@ -36,9 +36,14 @@ public class MessageGetService {
             if(msg.startsWith("/")){
                 messageHandler.getCommand(admin,msg);
             }
-            else {
+            else if(admin.getStatesOfBot()!=StatesOfBot.DEFAULT){
                 messageHandler.handleResponse(admin,msg);
             }
+            else messageResponseService.sending(
+                    admin.getFacebookId(),
+                        "Neexistujicí příkaz, použijte prosím příkaz /help",
+                        MessageType.RESPONSE
+                );
         }
 //        else {
 //            messageService.sending(message.getSender(),
