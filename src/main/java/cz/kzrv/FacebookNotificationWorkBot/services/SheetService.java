@@ -87,6 +87,8 @@ public class SheetService {
                                 callByName(nameArray[1],i,false);
                             }
                         }
+                        else callByName(name,i,true);
+
                     }
                 }
             }
