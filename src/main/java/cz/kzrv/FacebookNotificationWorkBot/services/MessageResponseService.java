@@ -20,19 +20,12 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @PropertySource("classpath:application.properties")
-public class MessageService {
+public class MessageResponseService {
 
-    private final PeopleService peopleService;
-    private final MessageHandler messageHandler;
 
     @Value("${bot.token}")
     private String token;
 
-    @Autowired
-    public MessageService(PeopleService peopleService, MessageHandler messageHandler) {
-        this.peopleService = peopleService;
-        this.messageHandler = messageHandler;
-    }
 
     public void sending(String recipient,String msg, MessageType type){
         String URL = "https://graph.facebook.com/v14.0/me/messages?access_token="+token;
@@ -52,33 +45,5 @@ public class MessageService {
             System.out.println(e.getLocalizedMessage());
         }
     }
-    public void gettingMessage(Message message){
-        Person person = peopleService.getMessageFromUser(message.getMsg());
-        Person admin = peopleService.findByFacebookID(message.getSender());
-        if(person!=null && !person.getActivated()){
-            person.setActivated(true);
-            person.setFacebookId(message.getSender());
-            person.setStatesOfBot(StatesOfBot.DEFAULT);
-            peopleService.save(person);
-            sending(person.getFacebookId(),
-                    "You was successfully registered",
-                    MessageType.RESPONSE
-            );
-        }
-        else if(admin.getAdmin() && admin.getActivated()){
-            String msg  = message.getMsg();
-            if(msg.startsWith("/")){
-                messageHandler.getCommand(person,msg);
-            }
-            else {
 
-            }
-        }
-//        else {
-//            messageService.sending(message.getSender(),
-//                    "Command is invalid or you're already registered",
-//                    MessageType.RESPONSE
-//            );
-//        }
-    }
 }

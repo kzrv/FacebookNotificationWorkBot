@@ -17,13 +17,13 @@ public class TodayService {
 
     private final TodayShiftRepository todayShiftRepository;
     private final PeopleService peopleService;
-    private final MessageService messageService;
+    private final MessageResponseService messageResponseService;
 
     @Autowired
-    public TodayService(TodayShiftRepository todayShiftRepository, PeopleService peopleService, MessageService messageService) {
+    public TodayService(TodayShiftRepository todayShiftRepository, PeopleService peopleService, MessageResponseService messageResponseService) {
         this.todayShiftRepository = todayShiftRepository;
         this.peopleService = peopleService;
-        this.messageService = messageService;
+        this.messageResponseService = messageResponseService;
     }
 
     public void addShift(Person person, TimeTable timeTable) {
@@ -48,7 +48,7 @@ public class TodayService {
                 String msg = "Dneska od " +
                         timeTable.getBegin() +
                         " do " + timeTable.getEnd() + " budeš mít směnu";
-                messageService.sending(
+                messageResponseService.sending(
                         shift.getOwner().getFacebookId(),
                         msg,
                         MessageType.CONFIRMED_EVENT_UPDATE);

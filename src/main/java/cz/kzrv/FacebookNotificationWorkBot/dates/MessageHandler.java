@@ -1,7 +1,7 @@
 package cz.kzrv.FacebookNotificationWorkBot.dates;
 
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
-import cz.kzrv.FacebookNotificationWorkBot.services.MessageService;
+import cz.kzrv.FacebookNotificationWorkBot.services.MessageResponseService;
 import cz.kzrv.FacebookNotificationWorkBot.services.PeopleService;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MessageHandler {
-    private final MessageService messageService;
+public class MessageHandler{
     private final PeopleService peopleService;
+    private final MessageResponseService messageService;
 
     @Autowired
-    public MessageHandler(MessageService messageService, PeopleService peopleService) {
-        this.messageService = messageService;
+    public MessageHandler(PeopleService peopleService, MessageResponseService messageService) {
         this.peopleService = peopleService;
+        this.messageService = messageService;
     }
 
     public void getCommand(Person person, String msg) {
@@ -41,9 +41,9 @@ public class MessageHandler {
 
             case "/lide" :
                 List<Person> list = peopleService.getAllPeople();
-                list.forEach(s->messageService.sending(person.getFacebookId(),
+                messageService.sending(person.getFacebookId(),
                         list.toString(),
-                        MessageType.RESPONSE));
+                        MessageType.RESPONSE);
                 break;
             case "/help" :
                 String msg1 = "Příkazy: \n"+

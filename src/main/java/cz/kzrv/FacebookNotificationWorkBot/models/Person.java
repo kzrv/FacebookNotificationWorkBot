@@ -44,6 +44,6 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return name+" : Facebook ID: " + facebookId + "Activated: "+activated + "Activated code: "+ code;
+        return name+" : Facebook ID: " + facebookId + "\nActivated: "+activated + "\nActivated code: "+ code+"\n";
     }
 }

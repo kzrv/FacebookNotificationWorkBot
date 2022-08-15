@@ -14,12 +14,12 @@ import java.util.List;
 @Service
 public class TomorrowService {
     private final TomorrowRepository tomorrowRepository;
-    private final MessageService messageService;
+    private final MessageResponseService messageResponseService;
 
     @Autowired
-    public TomorrowService(TomorrowRepository tomorrowRepository, MessageService messageService) {
+    public TomorrowService(TomorrowRepository tomorrowRepository, MessageResponseService messageResponseService) {
         this.tomorrowRepository = tomorrowRepository;
-        this.messageService = messageService;
+        this.messageResponseService = messageResponseService;
     }
     public void addShift(Person person, TimeTable timeTable){
         TomorrowShift tomorrowShift = new TomorrowShift();
@@ -39,7 +39,7 @@ public class TomorrowService {
                 String msg = "Budeš zítra mít směnu od "+
                         timeTable.getBegin() +
                         " do " + timeTable.getEnd();
-                messageService.sending(
+                messageResponseService.sending(
                         shift.getOwner().getFacebookId(),
                         msg,
                         MessageType.CONFIRMED_EVENT_UPDATE);
