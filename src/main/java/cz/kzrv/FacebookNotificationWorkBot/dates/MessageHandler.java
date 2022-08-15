@@ -25,7 +25,7 @@ public class MessageHandler{
             case "/add" :
                     messageService.sending(
                             person.getFacebookId(),
-                            "Napiště prosím jméno človeka,ktereho chcete smazat(Stejně jako v bude zapsan v tabulke)",
+                            "Napiště prosím jméno človeka,ktereho chcete přídat(Stejně jako bude zapsan v tabulce)",
                             MessageType.RESPONSE);
                     person.setStatesOfBot(StatesOfBot.ADD_NEW_USER);
                     peopleService.save(person);
@@ -69,13 +69,14 @@ public class MessageHandler{
                     Person personNew = new Person();
                     personNew.setActivated(false);
                     personNew.setAdmin(false);
-                    personNew.setCode("sds");
+                    personNew.setCode(Generator.uniqueCode(msg));
                     personNew.setName(msg);
                     messageService.sending(
                             person.getFacebookId(),
                             "Uživatel byl úspěšně přidán",
                             MessageType.RESPONSE
                     );
+                    peopleService.save(personNew);
                     save(person);
                 }
                 else messageService.sending(
@@ -91,7 +92,7 @@ public class MessageHandler{
                     peopleService.delete(personForDelete);
                     messageService.sending(
                             person.getFacebookId(),
-                            "Uživatel byl úspěšně odebran",
+                            "Uživatel byl úspěšně smazan",
                             MessageType.RESPONSE
                     );
                     save(person);
