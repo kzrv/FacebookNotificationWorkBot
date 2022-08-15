@@ -31,13 +31,13 @@ public class MessageGetService {
                     MessageType.RESPONSE
             );
         }
-        else if(admin.getAdmin() && admin.getActivated()){
+        else if(admin!=null && admin.getAdmin() && admin.getActivated()){
             String msg  = message.getMsg();
             if(msg.startsWith("/")){
                 messageHandler.getCommand(admin,msg);
             }
             else {
-
+                messageHandler.handleResponse(admin,msg);
             }
         }
 //        else {

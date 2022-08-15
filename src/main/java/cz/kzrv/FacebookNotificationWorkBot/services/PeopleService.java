@@ -40,4 +40,7 @@ public class PeopleService {
     public Person findByFacebookID(String id){
         return peopleRepository.findByFacebookId(id);
     }
+    public void delete(Person person){
+        peopleRepository.delete(person);
+    }
 }

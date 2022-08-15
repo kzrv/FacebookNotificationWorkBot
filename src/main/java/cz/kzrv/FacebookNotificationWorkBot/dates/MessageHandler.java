@@ -61,8 +61,53 @@ public class MessageHandler{
                 break;
         }
     }
-    public void handleResponse(){
+    public void handleResponse(Person person,String msg){
+        StatesOfBot state =  person.getStatesOfBot();
+        switch (state){
+            case ADD_NEW_USER:
+                if(peopleService.findByName(msg)==null){
+                    Person personNew = new Person();
+                    personNew.setActivated(false);
+                    personNew.setAdmin(false);
+                    personNew.setCode("sds");
+                    personNew.setName(msg);
+                    messageService.sending(
+                            person.getFacebookId(),
+                            "Uživatel byl úspěšně přidán",
+                            MessageType.RESPONSE
+                    );
+                    save(person);
+                }
+                else messageService.sending(
+                        person.getFacebookId(),
+                        "Takový uživatel už existuje",
+                        MessageType.RESPONSE
+                );
+                break;
 
+            case DELETE_USER:
+                Person personForDelete = peopleService.findByName(msg);
+                if(personForDelete!=null){
+                    peopleService.delete(personForDelete);
+                    messageService.sending(
+                            person.getFacebookId(),
+                            "Uživatel byl úspěšně odebran",
+                            MessageType.RESPONSE
+                    );
+                    save(person);
+                }else messageService.sending(
+                        person.getFacebookId(),
+                        "Takový uživatel neexistuje",
+                        MessageType.RESPONSE
+                );
+                break;
+        }
+
+    }
+
+    private void save(Person person) {
+        person.setStatesOfBot(StatesOfBot.DEFAULT);
+        peopleService.save(person);
     }
 
 
