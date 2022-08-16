@@ -60,7 +60,7 @@ public class SheetService {
                               String[] nameArray = name.split("/");
                               if (!nameArray[0].equals("")) {
                                   callByNameToday(nameArray[0], i,1);
-                              } else if (!nameArray[1].equals("")) {
+                              } if (!nameArray[1].equals("")) {
                                   callByNameToday(nameArray[1],i,2);
                               }
                           }
@@ -90,8 +90,9 @@ public class SheetService {
                         if (name.contains("/")) {
                             String[] nameArray = name.split("/");
                             if (!nameArray[0].equals("")) {
-                                callByName(nameArray[0], i,1);
-                            } else if (!nameArray[1].equals("")) {
+                                callByName(nameArray[0], i, 1);
+                            }
+                            if (!nameArray[1].equals("")) {
                                 callByName(nameArray[1],i,2);
                             }
                         }
