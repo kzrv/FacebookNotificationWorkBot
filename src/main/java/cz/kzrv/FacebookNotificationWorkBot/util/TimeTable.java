@@ -1,25 +1,54 @@
 package cz.kzrv.FacebookNotificationWorkBot.util;
 
-public enum TimeTable {
-    MANAZER("9:30","24:00"),
-    PIZZAR_HLAVNI("9:30","24:00"),
-    PIZZAR("16:30","20:00"),
-    RIDIC1("10:00","24:00"),
-    RIDIC2("11:00","14:00"),
-    RIDIC3("18:00","21:30"),
-    ZDOBENI("11:00","14:00"),
-    SKOLENI("17:00","21:00");
+import java.util.Arrays;
 
+public enum TimeTable {
+    MANAZER(1,0,"9:30","24:00"),
+    MANAZER_1(1,1,"9:30","24:00"),
+    MANAZER_2(1,2,"9:30","24:00"),
+
+    PIZZAR_HLAVNI(2,0,"9:30","24:00"),
+    PIZZAR_HLAVNI_1(2,1,"9:30","24:00"),
+    PIZZAR_HLAVNI_2(2,2,"9:30","24:00"),
+
+    PIZZAR(3,0,"16:30","20:00"),
+    PIZZAR_1(3,1,"16:30","20:00"),
+    PIZZAR_2(3,2,"16:30","20:00"),
+
+    RIDIC1(4,0,"10:00","24:00"),
+    RIDIC1_1(4,1,"10:00","16:30"),
+    RIDIC1_2(4,2,"16:30","24:00"),
+
+    RIDIC2(5,0,"16:30","24:00"),
+    RIDIC2_1(5,1,"11:00","14:00"),
+    RIDIC2_2(5,2,"16:30","23:00"),
+
+    RIDIC3(6,0,"18:00","24:00"),
+    RIDIC3_1(6,1,"18:00","21:30"),
+    RIDIC_2(6,2,"18:00","21:30"),
+
+    ZDOBENI(7,0,"16:30","22:00"),
+    ZDOBENI_1(7,1,"11:00","14:00"),
+    ZDOBENI_2(7,2,"16:30","22:00"),
+
+    SKOLENI(8,0,"17:00","21:00"),
+    SKOLENI_1(8,1,"17:00","21:00"),
+    SKOLENI_2(8,2,"17:00","21:00");
+
+    private int id;
+    private int shift;
     private String begin;
     private String end;
 
-    TimeTable(String begin, String end) {
+    TimeTable(int id, int shift,String begin, String end) {
         this.begin = begin;
         this.end = end;
+        this.id = id;
+        this.shift = shift;
     }
 
-    public static TimeTable getById(int id){
-        return TimeTable.values()[id];
+    public static TimeTable getById(int id, int shift){
+        return Arrays.stream(TimeTable.values()).filter(el->el.id==id && el.shift==shift).findFirst().orElse(null);
     }
 
     public String getBegin() {
@@ -38,5 +67,19 @@ public enum TimeTable {
         this.end = end;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getShift() {
+        return shift;
+    }
+
+    public void setShift(int shift) {
+        this.shift = shift;
+    }
 }

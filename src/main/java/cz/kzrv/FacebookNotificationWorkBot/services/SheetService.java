@@ -8,7 +8,6 @@ import cz.kzrv.FacebookNotificationWorkBot.config.GoogleAuthorizationConfig;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.util.Month;
 import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable;
-import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -55,9 +54,18 @@ public class SheetService {
             for (List<Object> row : values) {
                for(int i = 0 ; i<row.size();i++){
                   if(row.get(i)!=null){
-                      Person person = peopleService.findByName(row.get(i).toString());
-                      if(person!=null && person.getActivated()){
-                          todayService.addShift(person, TimeTable.getById(i));
+                      String name =row.get(i).toString();
+                      if(name!=null){
+                          if (name.contains("/")) {
+                              String[] nameArray = name.split("/");
+                              if (!nameArray[0].equals("")) {
+                                  callByNameToday(nameArray[0], i,1);
+                              } else if (!nameArray[1].equals("")) {
+                                  callByNameToday(nameArray[1],i,2);
+                              }
+                          }
+                          else callByNameToday(name,i,0);
+
                       }
                   }
                }
@@ -82,12 +90,12 @@ public class SheetService {
                         if (name.contains("/")) {
                             String[] nameArray = name.split("/");
                             if (!nameArray[0].equals("")) {
-                                callByName(nameArray[0], i,true);
+                                callByName(nameArray[0], i,1);
                             } else if (!nameArray[1].equals("")) {
-                                callByName(nameArray[1],i,false);
+                                callByName(nameArray[1],i,2);
                             }
                         }
-                        else callByName(name,i,true);
+                        else callByName(name,i,0);
 
                     }
                 }
@@ -105,11 +113,17 @@ public class SheetService {
         String currenMonth = Month.getMonthName(month);
         return currenMonth+"!B"+day+":I"+day;
     }
-    private void callByName(String name,int i,boolean shift){
+    private void callByName(String name,int i,int shift){
         Person person = peopleService.findByName(name.trim());
         if(person!=null && person.getActivated()){
-            if(shift)tomorrowShift.addShift(person, TimeTable.getById(i));
-            else tomorrowShift.addShift(person, TimeTable2.getById(i));
+        tomorrowShift.addShift(person, TimeTable.getById(i,shift));
+        }
+
+    }
+    private void callByNameToday(String name,int i,int shift){
+        Person person = peopleService.findByName(name.trim());
+        if(person!=null && person.getActivated()){
+            todayService.addShift(person, TimeTable.getById(i,shift));
         }
 
     }
