@@ -20,7 +20,7 @@ public class TodayShift{
     @ManyToOne
     @JoinColumn(name="name_id",referencedColumnName = "name")
     private Person owner;
-    @Enumerated(value = EnumType.ORDINAL)
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "shift")
     private TimeTable timeTable;
     @Column(name="sent")
