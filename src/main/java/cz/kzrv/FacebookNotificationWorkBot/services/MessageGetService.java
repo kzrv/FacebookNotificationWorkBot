@@ -27,6 +27,7 @@ public class MessageGetService {
     public void gettingMessage(Message message){
         Person notRegisteredPerson = peopleService.getMessageFromUser(message.getMsg());
         Person registeredPerson = peopleService.findByFacebookID(message.getSender());
+        System.out.println(message.getOptin());
         if(notRegisteredPerson!=null && !notRegisteredPerson.getActivated()){
             notRegisteredPerson.setActivated(true);
             notRegisteredPerson.setFacebookId(message.getSender());
@@ -39,7 +40,7 @@ public class MessageGetService {
             messageDailyRequestService.execute(message.getSender());
         }
         if(registeredPerson!=null && registeredPerson.getStatesOfBot()==StatesOfBot.REQUEST && registeredPerson.getActivated()){
-            System.out.println(message.getOptin());
+            System.out.println("TRUE!!!!!!!!!!!!!!!");
             if(message.getOptin()!=null){
                 Optin optin = message.getOptin();
                 if(optin.getPayload().equals("PAYLOAD_DAILY_REQUEST")){
