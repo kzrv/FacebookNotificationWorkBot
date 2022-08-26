@@ -39,6 +39,7 @@ public class MessageGetService {
             messageDailyRequestService.execute(message.getSender());
         }
         if(registeredPerson!=null && registeredPerson.getStatesOfBot()==StatesOfBot.REQUEST && registeredPerson.getActivated()){
+            System.out.println(message.getOptin());
             if(message.getOptin()!=null){
                 Optin optin = message.getOptin();
                 if(optin.getPayload().equals("PAYLOAD_DAILY_REQUEST")){

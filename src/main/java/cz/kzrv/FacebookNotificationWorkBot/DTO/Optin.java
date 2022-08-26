@@ -26,4 +26,18 @@ public class Optin {
 
     public Optin() {
     }
+
+    @Override
+    public String toString() {
+        return "Optin{" +
+                "type='" + type + '\'' +
+                ", payload='" + payload + '\'' +
+                ", notifToken='" + notifToken + '\'' +
+                ", notifFrequency='" + notifFrequency + '\'' +
+                ", notifTimezone='" + notifTimezone + '\'' +
+                ", tokenTime='" + tokenTime + '\'' +
+                ", tokenStatus='" + tokenStatus + '\'' +
+                ", messageStatus='" + messageStatus + '\'' +
+                '}';
+    }
 }
