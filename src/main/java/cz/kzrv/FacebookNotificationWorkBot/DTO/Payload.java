@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Payload {
-    @JsonProperty(value = "notification_message")
+    @JsonProperty(value = "template_type")
     private String templateType;
     @JsonProperty(value = "image_url")
     private String imageUrl;

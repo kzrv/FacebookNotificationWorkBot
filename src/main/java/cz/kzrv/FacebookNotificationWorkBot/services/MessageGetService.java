@@ -29,7 +29,7 @@ public class MessageGetService {
         if(person!=null && !person.getActivated()){
             person.setActivated(true);
             person.setFacebookId(message.getSender());
-            person.setStatesOfBot(StatesOfBot.DEFAULT);
+            person.setStatesOfBot(StatesOfBot.REQUEST);
             peopleService.save(person);
             messageResponseService.sending(person.getFacebookId(),
                     "Byli jste úspěšně zaregistrováni",

@@ -74,11 +74,18 @@ public class MessageHandler{
                     personNew.setStatesOfBot(StatesOfBot.DEFAULT);
                     messageService.sending(
                             person.getFacebookId(),
-                            "Uživatel byl úspěšně přidán",
+                            "Uživatel byl úspěšně přidán\n" +
+                                    "Activated kod:",
                             MessageType.RESPONSE
                     );
                     peopleService.save(personNew);
                     save(person);
+                    Person person1 = peopleService.findByName(msg);
+                    messageService.sending(
+                            person.getFacebookId(),
+                            person1.getCode(),
+                            MessageType.RESPONSE
+                    );
                 }
                 else messageService.sending(
                         person.getFacebookId(),
