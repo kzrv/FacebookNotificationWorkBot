@@ -5,6 +5,7 @@ import cz.kzrv.FacebookNotificationWorkBot.dates.StatesOfBot;
 import cz.kzrv.FacebookNotificationWorkBot.models.Message;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,10 +13,14 @@ public class MessageGetService {
     private final PeopleService peopleService;
     private final MessageResponseService messageResponseService;
     private final MessageHandler messageHandler;
-    public MessageGetService(PeopleService peopleService, MessageResponseService messageResponseService, MessageHandler messageHandler) {
+    private final MessageDailyRequestService messageDailyRequestService;
+
+    @Autowired
+    public MessageGetService(PeopleService peopleService, MessageResponseService messageResponseService, MessageHandler messageHandler, MessageDailyRequestService messageDailyRequestService) {
         this.peopleService = peopleService;
         this.messageResponseService = messageResponseService;
         this.messageHandler = messageHandler;
+        this.messageDailyRequestService = messageDailyRequestService;
     }
 
     public void gettingMessage(Message message){
@@ -27,9 +32,10 @@ public class MessageGetService {
             person.setStatesOfBot(StatesOfBot.DEFAULT);
             peopleService.save(person);
             messageResponseService.sending(person.getFacebookId(),
-                    "You was successfully registered",
+                    "Byli jste úspěšně zaregistrováni",
                     MessageType.RESPONSE
             );
+            messageDailyRequestService.execute(message.getSender());
         }
         else if(admin!=null && admin.getAdmin() && admin.getActivated()){
             String msg  = message.getMsg();

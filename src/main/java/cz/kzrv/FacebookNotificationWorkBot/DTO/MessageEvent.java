@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class MessageEvent {
     private String mid; // id of message
     private String text;
+    private Attachment attachment;
 
     public MessageEvent() {
     }
@@ -28,5 +29,13 @@ public class MessageEvent {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Attachment getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
     }
 }
