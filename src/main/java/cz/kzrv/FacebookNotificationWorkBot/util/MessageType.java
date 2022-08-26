@@ -5,7 +5,7 @@ public enum MessageType {
     UPDATE,
     MESSAGE_TAG,
     CONFIRMED_EVENT_UPDATE,
-    NOTIFICATION_MESSAGE;
+    NOTIFICATION_MESSAGES;
 
     MessageType() {
     }

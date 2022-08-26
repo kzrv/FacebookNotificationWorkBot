@@ -33,7 +33,7 @@ public class MessageDailyRequestService {
         MessageDailyRequest msg = new MessageDailyRequest();
         msg.setRecipient(new Recipient(id));
         Payload payload = new Payload();
-        payload.setTemplateType(MessageType.NOTIFICATION_MESSAGE.toString());
+        payload.setTemplateType(MessageType.NOTIFICATION_MESSAGES.toString());
         payload.setTitle("Dejte prosím souhlas se zasíláním pravidelných upozornění");
         payload.setImageUrl("https://cdn.pixabay.com/photo/2022/08/18/09/20/houses-7394390_1280.jpg");
         payload.setPayload("PAYLOAD_DAILY_REQUEST");
