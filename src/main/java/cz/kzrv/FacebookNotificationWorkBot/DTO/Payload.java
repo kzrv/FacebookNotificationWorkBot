@@ -13,11 +13,11 @@ public class Payload {
     private String imageUrl;
     private String title;
     private String payload;
-    @JsonProperty(value = "notification_message_frequency")
+    @JsonProperty(value = "notification_messages_frequency")
     private String notifMsgFrequency;
-    @JsonProperty(value = "notification_message_reoptin")
+    @JsonProperty(value = "notification_messages_reoptin")
     private String notifMsgReoptin;
-    @JsonProperty(value = "notification_message_timezone")
+    @JsonProperty(value = "notification_messages_timezone")
     private String notifMsgTimezone;
 
     public Payload() {
