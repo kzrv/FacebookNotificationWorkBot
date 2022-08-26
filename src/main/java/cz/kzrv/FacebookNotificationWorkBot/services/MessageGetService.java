@@ -1,5 +1,6 @@
 package cz.kzrv.FacebookNotificationWorkBot.services;
 
+import cz.kzrv.FacebookNotificationWorkBot.DTO.Optin;
 import cz.kzrv.FacebookNotificationWorkBot.dates.MessageHandler;
 import cz.kzrv.FacebookNotificationWorkBot.dates.StatesOfBot;
 import cz.kzrv.FacebookNotificationWorkBot.models.Message;
@@ -24,29 +25,38 @@ public class MessageGetService {
     }
 
     public void gettingMessage(Message message){
-        Person person = peopleService.getMessageFromUser(message.getMsg());
-        Person admin = peopleService.findByFacebookID(message.getSender());
-        if(person!=null && !person.getActivated()){
-            person.setActivated(true);
-            person.setFacebookId(message.getSender());
-            person.setStatesOfBot(StatesOfBot.REQUEST);
-            peopleService.save(person);
-            messageResponseService.sending(person.getFacebookId(),
+        Person notRegisteredPerson = peopleService.getMessageFromUser(message.getMsg());
+        Person registeredPerson = peopleService.findByFacebookID(message.getSender());
+        if(notRegisteredPerson!=null && !notRegisteredPerson.getActivated()){
+            notRegisteredPerson.setActivated(true);
+            notRegisteredPerson.setFacebookId(message.getSender());
+            notRegisteredPerson.setStatesOfBot(StatesOfBot.REQUEST);
+            peopleService.save(notRegisteredPerson);
+            messageResponseService.sending(notRegisteredPerson.getFacebookId(),
                     "Byli jste úspěšně zaregistrováni",
                     MessageType.RESPONSE
             );
             messageDailyRequestService.execute(message.getSender());
         }
-        else if(admin!=null && admin.getAdmin() && admin.getActivated()){
+        if(registeredPerson!=null && registeredPerson.getStatesOfBot()==StatesOfBot.REQUEST && registeredPerson.getActivated()){
+            if(message.getOptin()!=null){
+                Optin optin = message.getOptin();
+                if(optin.getPayload().equals("PAYLOAD_DAILY_REQUEST")){
+                    System.out.println(optin.getTokenStatus());
+                    registeredPerson.setStatesOfBot(StatesOfBot.DEFAULT);
+                }
+            }
+        }
+        if(registeredPerson!=null && registeredPerson.getAdmin() && registeredPerson.getActivated()){
             String msg  = message.getMsg();
             if(msg.startsWith("/")){
-                messageHandler.getCommand(admin,msg);
+                messageHandler.getCommand(registeredPerson,msg);
             }
-            else if(admin.getStatesOfBot()!=StatesOfBot.DEFAULT){
-                messageHandler.handleResponse(admin,msg);
+            else if(registeredPerson.getStatesOfBot()!=StatesOfBot.DEFAULT){
+                messageHandler.handleResponse(registeredPerson,msg);
             }
             else messageResponseService.sending(
-                    admin.getFacebookId(),
+                    registeredPerson.getFacebookId(),
                         "Neexistujicí příkaz, použijte prosím příkaz /help",
                         MessageType.RESPONSE
                 );

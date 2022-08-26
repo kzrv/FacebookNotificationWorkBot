@@ -23,7 +23,7 @@ public class BotController {
     }
 
     @GetMapping("/webhook")
-                                            public ResponseEntity<String> start(@RequestParam("hub.mode")String subscribe,
+    public ResponseEntity<String> start(@RequestParam("hub.mode")String subscribe,
                         @RequestParam("hub.verify_token")String token,
                         @RequestParam("hub.challenge")String response){
         if(peopleService.checkToken(token) && subscribe.equals("subscribe")){
@@ -33,18 +33,17 @@ public class BotController {
 
     }
     @PostMapping("/webhook")
-    public ResponseEntity<HttpStatus> webhook(@RequestBody @Valid Event event, BindingResult bindingResult){
-        if(!bindingResult.hasErrors()){
-                messageGetService.gettingMessage(transfer(event));
-                return ResponseEntity.ok(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<HttpStatus> webhook(@RequestBody Event event){
+            messageGetService.gettingMessage(transfer(event));
+            return ResponseEntity.ok(HttpStatus.OK);
+
     }
 
     private Message transfer(Event event){
         Message message = new Message();
         message.setSender(event.getEntry().get(0).getMessaging().get(0).getSender().getId());
         message.setMsg(event.getEntry().get(0).getMessaging().get(0).getMessage().getText());
+        message.setOptin(event.getEntry().get(0).getMessaging().get(0).getOptin());
         return message;
     }
 
