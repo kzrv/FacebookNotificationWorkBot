@@ -38,7 +38,7 @@ public class MessageDailyRequestService {
         payload.setImageUrl("https://cdn.pixabay.com/photo/2022/08/18/09/20/houses-7394390_1280.jpg");
         payload.setPayload("PAYLOAD_DAILY_REQUEST");
         payload.setNotifMsgFrequency("DAILY");
-        payload.setNotifMsgReoptin("ENABLE");
+        payload.setNotifMsgReoptin("ENABLED");
         payload.setNotifMsgTimezone("Poland");
         MessageEvent message = new MessageEvent();
         message.setAttachment(new Attachment("template",payload));
