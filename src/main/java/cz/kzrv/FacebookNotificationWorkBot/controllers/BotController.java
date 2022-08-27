@@ -42,7 +42,6 @@ public class BotController {
             message.setMsg(event.getEntry().get(0).getMessaging().get(0).getMessage().getText());
         else message.setMsg("0");
         message.setSender(event.getEntry().get(0).getMessaging().get(0).getSender().getId());
-        message.setMsg(event.getEntry().get(0).getMessaging().get(0).getMessage().getText());
         message.setOptin(event.getEntry().get(0).getMessaging().get(0).getOptin());
         return message;
     }
