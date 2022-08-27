@@ -7,10 +7,7 @@ import cz.kzrv.FacebookNotificationWorkBot.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 public class BotController {
@@ -41,6 +38,9 @@ public class BotController {
 
     private Message transfer(Event event){
         Message message = new Message();
+        if(event.getEntry().get(0).getMessaging().get(0).getMessage()!=null)
+            message.setMsg(event.getEntry().get(0).getMessaging().get(0).getMessage().getText());
+        else message.setMsg("0");
         message.setSender(event.getEntry().get(0).getMessaging().get(0).getSender().getId());
         message.setMsg(event.getEntry().get(0).getMessaging().get(0).getMessage().getText());
         message.setOptin(event.getEntry().get(0).getMessaging().get(0).getOptin());

@@ -5,8 +5,6 @@ import cz.kzrv.FacebookNotificationWorkBot.DTO.MessageDailyRequest;
 import cz.kzrv.FacebookNotificationWorkBot.DTO.MessageEvent;
 import cz.kzrv.FacebookNotificationWorkBot.DTO.Payload;
 import cz.kzrv.FacebookNotificationWorkBot.DTO.user.Recipient;
-import cz.kzrv.FacebookNotificationWorkBot.util.MessageResponse;
-import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

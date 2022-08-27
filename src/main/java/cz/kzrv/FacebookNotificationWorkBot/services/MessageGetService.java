@@ -33,21 +33,28 @@ public class MessageGetService {
             notRegisteredPerson.setFacebookId(message.getSender());
             notRegisteredPerson.setStatesOfBot(StatesOfBot.REQUEST);
             peopleService.save(notRegisteredPerson);
-            messageResponseService.sending(notRegisteredPerson.getFacebookId(),
-                    "Byli jste úspěšně zaregistrováni",
-                    MessageType.RESPONSE
-            );
+            fastSend("Byli jste úspěšně zaregistrováni",notRegisteredPerson.getFacebookId());
             messageDailyRequestService.execute(message.getSender());
         }
-        if(registeredPerson!=null && registeredPerson.getStatesOfBot()==StatesOfBot.REQUEST && registeredPerson.getActivated()){
-            System.out.println("TRUE!!!!!!!!!!!!!!!");
-            if(message.getOptin()!=null){
+        if(registeredPerson!=null && message.getOptin()!=null && registeredPerson.getActivated()){
                 Optin optin = message.getOptin();
-                if(optin.getPayload().equals("PAYLOAD_DAILY_REQUEST")){
-                    System.out.println(optin.getTokenStatus());
-                    registeredPerson.setStatesOfBot(StatesOfBot.DEFAULT);
+                if(optin.getPayload().equals("PAYLOAD_DAILY_REQUEST")) {
+                    if (optin.getMessageStatus() != null) {
+                        if (optin.getMessageStatus().equals("RESUME_NOTIFICATIONS")) {
+                            registeredPerson.setStatesOfBot(StatesOfBot.DEFAULT);
+                            peopleService.save(registeredPerson);
+                            fastSend("Znovu budete dostávat upozornění", registeredPerson.getFacebookId());
+                        } else if (optin.getMessageStatus().equals("STOP_NOTIFICATIONS")) {
+                            registeredPerson.setStatesOfBot(StatesOfBot.REQUEST);
+                            peopleService.save(registeredPerson);
+                            fastSend("Již nebudete dostávat oznámení", registeredPerson.getFacebookId());
+                        }
+                    } else if(registeredPerson.getStatesOfBot()==StatesOfBot.REQUEST){
+                        registeredPerson.setStatesOfBot(StatesOfBot.DEFAULT);
+                        peopleService.save(registeredPerson);
+                        fastSend("Přihlášeno, díky. Po 6 měsících obdržíte upozornění na možnost obnovení předplatného. Také v případě výpovědi bude předplatné automaticky odstraněno", registeredPerson.getFacebookId());
+                    }
                 }
-            }
         }
         if(registeredPerson!=null && registeredPerson.getAdmin() && registeredPerson.getActivated()){
             String msg  = message.getMsg();
@@ -57,17 +64,14 @@ public class MessageGetService {
             else if(registeredPerson.getStatesOfBot()!=StatesOfBot.DEFAULT){
                 messageHandler.handleResponse(registeredPerson,msg);
             }
-            else messageResponseService.sending(
-                    registeredPerson.getFacebookId(),
-                        "Neexistujicí příkaz, použijte prosím příkaz /help",
-                        MessageType.RESPONSE
-                );
+            else fastSend("Neexistujicí příkaz, použijte prosím příkaz /help",registeredPerson.getFacebookId());
         }
-//        else {
-//            messageService.sending(message.getSender(),
-//                    "Command is invalid or you're already registered",
-//                    MessageType.RESPONSE
-//            );
-//        }
+    }
+    private void fastSend(String text,String id){
+        messageResponseService.sending(
+                id,
+                text,
+                MessageType.RESPONSE
+        );
     }
 }
