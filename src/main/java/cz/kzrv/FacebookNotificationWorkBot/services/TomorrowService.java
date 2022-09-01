@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TomorrowService {
@@ -34,14 +35,26 @@ public class TomorrowService {
     public void sendNotificationForTomorrow(){
         List<TomorrowShift> list = tomorrowRepository.findAll();
         for(TomorrowShift shift : list){
-            if(shift.getOwner().getFacebookId()!=null){
+            if(shift!=null && shift.getOwner().getFacebookId()!=null){
                 TimeTable timeTable = shift.getTimeTable();
                 String msg = "Budeš zítra mít směnu od "+
                         timeTable.getBegin() +
                         " do " + timeTable.getEnd();
-                messageResponseService.sendNotification(
-                        shift.getOwner(),
-                        msg);
+                List<TomorrowShift> list1 = list.stream().filter(s-> s.getOwner().getName().equals(shift.getOwner().getName()) &&
+                                s!=shift).collect(Collectors.toList());
+                if(!list1.isEmpty()){
+                    for(TomorrowShift shiftCheck : list1){
+                        timeTable = shiftCheck.getTimeTable();
+                        msg += "a od "+
+                                timeTable.getBegin() +
+                                " do " + timeTable.getEnd();
+                        list.remove(shiftCheck);
+                    }
+                }
+                messageResponseService.sending(
+                        shift.getOwner().getFacebookId(),
+                        msg,
+                        MessageType.CONFIRMED_EVENT_UPDATE);
             }
         }
     }

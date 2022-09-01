@@ -37,7 +37,7 @@ public class TodayService {
     public void deleteAll() {
         todayShiftRepository.deleteAll();
     }
-    @Scheduled(cron ="@hourly")
+//    @Scheduled(cron ="@hourly")
     public void sendNotificationForToday() {
         List<TodayShift> list = todayShiftRepository.findAll();
         for (TodayShift shift : list) {
