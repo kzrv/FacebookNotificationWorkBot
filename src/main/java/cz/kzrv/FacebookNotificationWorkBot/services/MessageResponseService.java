@@ -59,11 +59,17 @@ public class MessageResponseService {
         recipient.setNotMessageToken(person.getToken());
         following.setRecipient(recipient);
         HttpEntity<FollowingMessageResponse> entity = new HttpEntity<>(following,headers);
-        ResponseEntity<String> result = restTemplate.postForEntity(URL,entity,String.class);
-        if(!result.toString().contains("false")){
+        try {
+            ResponseEntity<String> result = restTemplate.postForEntity(URL,entity,String.class);
+            if(result.toString().contains("true")){
+                sending(person.getFacebookId(),message,MessageType.CONFIRMED_EVENT_UPDATE);
+            }
+            else System.out.println("ERROR SEND NOTIFICATION");
+        }
+        catch (RestClientException e){
             sending(person.getFacebookId(),message,MessageType.CONFIRMED_EVENT_UPDATE);
         }
-        else System.out.println("ERROR SEND NOTIFICATION");
+
     }
 
 }
