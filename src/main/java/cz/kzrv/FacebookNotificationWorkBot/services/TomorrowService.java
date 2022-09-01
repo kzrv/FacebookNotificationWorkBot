@@ -39,10 +39,9 @@ public class TomorrowService {
                 String msg = "Budeš zítra mít směnu od "+
                         timeTable.getBegin() +
                         " do " + timeTable.getEnd();
-                messageResponseService.sending(
-                        shift.getOwner().getFacebookId(),
-                        msg,
-                        MessageType.CONFIRMED_EVENT_UPDATE);
+                messageResponseService.sendNotification(
+                        shift.getOwner(),
+                        msg);
             }
         }
     }

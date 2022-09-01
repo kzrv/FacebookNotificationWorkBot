@@ -48,10 +48,9 @@ public class TodayService {
                 String msg = "Dneska od " +
                         timeTable.getBegin() +
                         " do " + timeTable.getEnd() + " budeš mít směnu";
-                messageResponseService.sending(
-                        shift.getOwner().getFacebookId(),
-                        msg,
-                        MessageType.CONFIRMED_EVENT_UPDATE);
+                messageResponseService.sendNotification(
+                        shift.getOwner(),
+                        msg);
             }
         }
     }

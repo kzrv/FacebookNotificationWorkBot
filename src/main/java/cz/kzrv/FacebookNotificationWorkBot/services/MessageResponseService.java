@@ -3,6 +3,7 @@ package cz.kzrv.FacebookNotificationWorkBot.services;
 import cz.kzrv.FacebookNotificationWorkBot.DTO.MessageEvent;
 import cz.kzrv.FacebookNotificationWorkBot.DTO.user.Recipient;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
+import cz.kzrv.FacebookNotificationWorkBot.util.FollowingMessageResponse;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageResponse;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -48,12 +50,20 @@ public class MessageResponseService {
         }
     }
     public void sendNotification(Person person, String message){
-//        String URL = "https://graph.facebook.com/v14.0/me/notification_messages_dev_support?recipient="+ person.getFacebookId()
-//                + "&developer_action=ENABLE_FOLLOWUP_MESSAGE" +
-//                "&access_token="+ person.getToken();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<Object> entity = new HttpEntity<>(new Object(){String notification_messages_token = person.getToken();},)
+        String URL = "https://graph.facebook.com/v14.0/me/notification_messages_dev_support?access_token=" + token;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        FollowingMessageResponse following = new FollowingMessageResponse();
+        following.setDevAction("ENABLE_FOLLOWUP_MESSAGE");
+        Recipient recipient = new Recipient();
+        recipient.setNotMessageToken(person.getToken());
+        following.setRecipient(recipient);
+        HttpEntity<FollowingMessageResponse> entity = new HttpEntity<>(following,headers);
+        ResponseEntity<String> result = restTemplate.postForEntity(URL,entity,String.class);
+        if(!result.toString().contains("false")){
+            sending(person.getFacebookId(),message,MessageType.CONFIRMED_EVENT_UPDATE);
+        }
+        else System.out.println("ERROR SEND NOTIFICATION");
     }
 
 }
