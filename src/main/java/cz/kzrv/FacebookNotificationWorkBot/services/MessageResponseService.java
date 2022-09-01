@@ -2,6 +2,7 @@ package cz.kzrv.FacebookNotificationWorkBot.services;
 
 import cz.kzrv.FacebookNotificationWorkBot.DTO.MessageEvent;
 import cz.kzrv.FacebookNotificationWorkBot.DTO.user.Recipient;
+import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageResponse;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,14 @@ public class MessageResponseService {
             System.out.println("!!!!!!!!EXCEPTION WHILE SENDING RESPONSE!!!!!!!!!!");
             System.out.println(e.getLocalizedMessage());
         }
+    }
+    public void sendNotification(Person person, String message){
+//        String URL = "https://graph.facebook.com/v14.0/me/notification_messages_dev_support?recipient="+ person.getFacebookId()
+//                + "&developer_action=ENABLE_FOLLOWUP_MESSAGE" +
+//                "&access_token="+ person.getToken();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        HttpEntity<Object> entity = new HttpEntity<>(new Object(){String notification_messages_token = person.getToken();},)
     }
 
 }

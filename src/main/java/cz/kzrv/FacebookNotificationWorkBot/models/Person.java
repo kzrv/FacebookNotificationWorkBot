@@ -37,6 +37,8 @@ public class Person implements Serializable {
     @Column(name="state")
     @Enumerated(value = EnumType.STRING)
     private StatesOfBot statesOfBot;
+    @Column(name = "notification_token")
+    private String token;
     @OneToMany(mappedBy = "owner")
     private List<TodayShift> today;
     @OneToMany(mappedBy = "owner")

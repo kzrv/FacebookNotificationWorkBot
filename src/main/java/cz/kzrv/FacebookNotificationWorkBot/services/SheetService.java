@@ -5,6 +5,7 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import cz.kzrv.FacebookNotificationWorkBot.config.GoogleAuthorizationConfig;
 
+import cz.kzrv.FacebookNotificationWorkBot.dates.StatesOfBot;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.util.Month;
 import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable;
@@ -41,6 +42,7 @@ public class SheetService {
         this.tomorrowShift = tomorrowShift;
     }
     @Scheduled(cron = "${one_a_day}")
+    @Scheduled(cron = "${one_a_day_2}")
     public void getSpreadsheetValues() throws IOException, GeneralSecurityException {
         todayService.deleteAll();
         Sheets sheetsService = googleAuthorizationConfig.getSheetService();
@@ -116,14 +118,14 @@ public class SheetService {
     }
     private void callByName(String name,int i,int shift){
         Person person = peopleService.findByName(name.trim());
-        if(person!=null && person.getActivated()){
+        if(person!=null && person.getActivated() && person.getStatesOfBot()!= StatesOfBot.REQUEST){
         tomorrowShift.addShift(person, TimeTable.getById(i,shift));
         }
 
     }
     private void callByNameToday(String name,int i,int shift){
         Person person = peopleService.findByName(name.trim());
-        if(person!=null && person.getActivated()){
+        if(person!=null && person.getActivated() && person.getStatesOfBot()!= StatesOfBot.REQUEST){
             todayService.addShift(person, TimeTable.getById(i,shift));
         }
 

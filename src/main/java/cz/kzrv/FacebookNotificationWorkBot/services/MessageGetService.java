@@ -42,15 +42,18 @@ public class MessageGetService {
                     if (optin.getMessageStatus() != null) {
                         if (optin.getMessageStatus().equals("RESUME_NOTIFICATIONS")) {
                             registeredPerson.setStatesOfBot(StatesOfBot.DEFAULT);
+                            registeredPerson.setToken(optin.getNotifToken());
                             peopleService.save(registeredPerson);
                             fastSend("Znovu budete dostávat upozornění", registeredPerson.getFacebookId());
                         } else if (optin.getMessageStatus().equals("STOP_NOTIFICATIONS")) {
                             registeredPerson.setStatesOfBot(StatesOfBot.REQUEST);
+                            registeredPerson.setToken(optin.getNotifToken());
                             peopleService.save(registeredPerson);
                             fastSend("Již nebudete dostávat oznámení", registeredPerson.getFacebookId());
                         }
                     } else if(registeredPerson.getStatesOfBot()==StatesOfBot.REQUEST){
                         registeredPerson.setStatesOfBot(StatesOfBot.DEFAULT);
+                        registeredPerson.setToken(optin.getNotifToken());
                         peopleService.save(registeredPerson);
                         fastSend("Přihlášeno, díky. Po 6 měsících obdržíte upozornění na možnost obnovení předplatného. Také v případě výpovědi bude předplatné automaticky odstraněno", registeredPerson.getFacebookId());
                     }
