@@ -51,7 +51,6 @@ public class TomorrowService {
                         msg += " a od "+
                                 timeTable.getBegin() +
                                 " do " + timeTable.getEnd();
-                        list.remove(shiftCheck);
                     }
                 }
                 messageResponseService.sending(
