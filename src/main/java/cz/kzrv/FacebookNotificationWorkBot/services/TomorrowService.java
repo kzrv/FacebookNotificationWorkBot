@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,18 +35,20 @@ public class TomorrowService {
     @Scheduled(cron = "${one_a_day_after}")
     public void sendNotificationForTomorrow(){
         List<TomorrowShift> list = tomorrowRepository.findAll();
+        List<TomorrowShift> duplicates = new ArrayList<>();
         for(TomorrowShift shift : list){
-            if(shift!=null && shift.getOwner().getFacebookId()!=null){
+            if(shift!=null && shift.getOwner().getFacebookId()!=null && !duplicates.contains(shift)){
                 TimeTable timeTable = shift.getTimeTable();
                 String msg = "Budeš zítra mít směnu od "+
                         timeTable.getBegin() +
                         " do " + timeTable.getEnd();
-                List<TomorrowShift> list1 = list.stream().filter(s-> s.getOwner().getName().equals(shift.getOwner().getName()) &&
-                                s!=shift).collect(Collectors.toList());
+                list.stream().filter(s-> s.getOwner().getName().equals(shift.getOwner().getName()) &&
+                        s!=shift).forEach(duplicates::add);
+                List<TomorrowShift> list1 = duplicates.stream().filter(s->s.getOwner().getName().equals(shift.getOwner().getName())).collect(Collectors.toList());
                 if(!list1.isEmpty()){
                     for(TomorrowShift shiftCheck : list1){
                         timeTable = shiftCheck.getTimeTable();
-                        msg += "a od "+
+                        msg += " a od "+
                                 timeTable.getBegin() +
                                 " do " + timeTable.getEnd();
                         list.remove(shiftCheck);
