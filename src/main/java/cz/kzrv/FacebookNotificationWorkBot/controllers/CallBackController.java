@@ -10,10 +10,10 @@ public class CallBackController {
 
     @GetMapping("private_policy")
     public String privatePolicy(){
-        return "/info/privatePolicy";
+        return "info/privatePolicy";
     }
     @GetMapping()
     public String info(){
-        return "/info/info";
+        return "info/info";
     }
 }
