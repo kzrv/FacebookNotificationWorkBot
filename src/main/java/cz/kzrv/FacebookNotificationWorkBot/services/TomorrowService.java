@@ -39,18 +39,22 @@ public class TomorrowService {
         for(TomorrowShift shift : list){
             if(shift!=null && shift.getOwner().getFacebookId()!=null && !duplicates.contains(shift)){
                 TimeTable timeTable = shift.getTimeTable();
-                String msg = "Budeš zítra mít směnu od "+
-                        timeTable.getBegin() +
-                        " do " + timeTable.getEnd();
+                String msg = "Budeš zítra pracovat jako "+ timeTable.getTitle();
+                if(!timeTable.getBegin().equals("DELENA")) {
+                    msg = " od " + timeTable.getBegin() +
+                            " do " + timeTable.getEnd();
+                }
                 list.stream().filter(s-> s.getOwner().getName().equals(shift.getOwner().getName()) &&
                         s!=shift).forEach(duplicates::add);
                 List<TomorrowShift> list1 = duplicates.stream().filter(s->s.getOwner().getName().equals(shift.getOwner().getName())).collect(Collectors.toList());
                 if(!list1.isEmpty()){
                     for(TomorrowShift shiftCheck : list1){
                         timeTable = shiftCheck.getTimeTable();
-                        msg += " a od "+
-                                timeTable.getBegin() +
-                                " do " + timeTable.getEnd();
+                        if(!timeTable.getBegin().equals("DELENA")) {
+                            msg += " a ještě od " +
+                                    timeTable.getBegin() +
+                                    " do " + timeTable.getEnd();
+                        }
                     }
                 }
                 messageResponseService.sending(
