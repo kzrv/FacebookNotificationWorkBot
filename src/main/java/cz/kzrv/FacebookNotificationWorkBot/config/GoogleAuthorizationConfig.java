@@ -60,9 +60,6 @@ public class GoogleAuthorizationConfig {
     }
     public Sheets getSheetService() throws IOException, GeneralSecurityException {
         Credential credential = authorize();
-//        HttpRequestInitializer httpRequestInitializer = request -> {
-//            request.setInterceptor(intercepted -> intercepted.getUrl().set("key", API_KEY));
-//        };
         return new Sheets.Builder(credential.getTransport(), credential.getJsonFactory(),credential)
                 .setApplicationName(APPLICATION_NAME)
                 .build();

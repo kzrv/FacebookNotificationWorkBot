@@ -3,7 +3,6 @@ package cz.kzrv.FacebookNotificationWorkBot.services;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.models.TomorrowShift;
 import cz.kzrv.FacebookNotificationWorkBot.repository.TomorrowRepository;
-import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import cz.kzrv.FacebookNotificationWorkBot.util.TimeTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -57,10 +56,9 @@ public class TomorrowService {
                         }
                     }
                 }
-                messageResponseService.sending(
-                        shift.getOwner().getFacebookId(),
-                        msg,
-                        MessageType.CONFIRMED_EVENT_UPDATE);
+                messageResponseService.sendNotification(
+                        shift.getOwner(),
+                        msg);
             }
         }
     }
