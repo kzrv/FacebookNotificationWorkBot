@@ -1,21 +1,20 @@
-package cz.kzrv.FacebookNotificationWorkBot.dates;
+package cz.kzrv.FacebookNotificationWorkBot.util;
 
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.services.MessageResponseService;
 import cz.kzrv.FacebookNotificationWorkBot.services.PeopleService;
-import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MessageHandler{
+public class MessageHandlerService {
     private final PeopleService peopleService;
     private final MessageResponseService messageService;
 
     @Autowired
-    public MessageHandler(PeopleService peopleService, MessageResponseService messageService) {
+    public MessageHandlerService(PeopleService peopleService, MessageResponseService messageService) {
         this.peopleService = peopleService;
         this.messageService = messageService;
     }
@@ -110,6 +109,8 @@ public class MessageHandler{
                         MessageType.RESPONSE
                 );
                 break;
+            case DEFAULT:
+                messageService.fastResponse("Neexistujicí příkaz, použijte prosím příkaz /help",person.getFacebookId());
         }
 
     }

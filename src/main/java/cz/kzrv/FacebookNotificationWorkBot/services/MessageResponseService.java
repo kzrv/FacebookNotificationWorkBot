@@ -71,5 +71,8 @@ public class MessageResponseService {
         }
 
     }
+    public void fastResponse(String msg,String recipient){
+        sending(recipient,msg,MessageType.RESPONSE);
+    }
 
 }

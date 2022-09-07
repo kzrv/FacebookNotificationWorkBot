@@ -28,7 +28,7 @@ public class PeopleService {
         return peopleRepository.findByName(name);
     }
 
-    public Person getMessageFromUser(String message) {
+    public Person findByMessage(String message) {
         return peopleRepository.findByCode(message);
     }
     public void save(Person person){

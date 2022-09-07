@@ -1,6 +1,4 @@
-package cz.kzrv.FacebookNotificationWorkBot.dates;
-
-import cz.kzrv.FacebookNotificationWorkBot.models.Person;
+package cz.kzrv.FacebookNotificationWorkBot.util;
 
 import java.util.ArrayList;
 

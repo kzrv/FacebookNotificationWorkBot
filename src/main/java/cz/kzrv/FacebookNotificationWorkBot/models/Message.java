@@ -13,4 +13,10 @@ public class Message {
 
     public Message() {
     }
+
+    public Message(String sender, String msg, Optin optin) {
+        this.sender = sender;
+        this.msg = msg;
+        this.optin = optin;
+    }
 }

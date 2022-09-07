@@ -22,4 +22,5 @@ public class TomorrowShift {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "shift")
     private TimeTable timeTable;
+
 }
