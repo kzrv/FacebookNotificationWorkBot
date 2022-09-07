@@ -41,7 +41,7 @@ public class TomorrowService {
                 TimeTable timeTable = shift.getTimeTable();
                 String msg = "Budeš zítra pracovat jako "+ timeTable.getTitle();
                 if(!timeTable.getBegin().equals("DELENA")) {
-                    msg = " od " + timeTable.getBegin() +
+                    msg += " od " + timeTable.getBegin() +
                             " do " + timeTable.getEnd();
                 }
                 list.stream().filter(s-> s.getOwner().getName().equals(shift.getOwner().getName()) &&
