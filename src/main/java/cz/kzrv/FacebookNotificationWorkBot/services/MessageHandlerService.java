@@ -22,7 +22,7 @@ public class MessageHandlerService {
 
     public void getCommand(Person person, String msg) {
         switch (msg){
-            case "/smazat" :
+            case "/pridat" :
                     messageService.sending(
                             person.getFacebookId(),
                             "Napiště prosím jméno človeka,ktereho chcete přídat(stejně jako bude zapsan v tabulce)",
@@ -30,7 +30,7 @@ public class MessageHandlerService {
                     person.setStatesOfBot(StatesOfBot.ADD_NEW_USER);
                     peopleService.save(person);
                     break;
-            case "/odebrat" :
+            case "/smazat" :
                 messageService.sending(
                         person.getFacebookId(),
                         "Napiště prosím jméno človeka,ktereho chcete smazat(velkými písmeny)",
@@ -44,17 +44,21 @@ public class MessageHandlerService {
                 messageService.fastResponse(listOfPeople(list),person.getFacebookId());
                 break;
             case "/help" :
-                String msg1 = "Příkazy: \n"+
-                        "*/pridat* - přidat nového člověka\n"+
-                        "*/smazat* - smazat osobu\n"+
-                        "*/lide* - seznam všech pracovníků\n"+
-                        "*/odkaz* - odkaz na stranku";
+                String msg1 = "`Příkazy:` \n"+
+                        "*/pridat* - `přidat nového člověka`\n"+
+                        "*/smazat* - `smazat osobu`\n"+
+                        "*/lide* - `seznam všech pracovníků`\n"+
+                        "*/odkaz* - `odkaz na stranku`";
                 messageService.sending(person.getFacebookId(),
                         msg1,
                         MessageType.RESPONSE);
                 break;
             case "/odkaz" :
                 messageService.fastResponse("https://www.facebook.com/workbotfordellipizza", person.getFacebookId());
+                break;
+            case "/zpatky" :
+                person.setStatesOfBot(StatesOfBot.DEFAULT);
+                peopleService.save(person);
                 break;
             default :
                 messageService.sending(person.getFacebookId(),
@@ -125,20 +129,22 @@ public class MessageHandlerService {
     private String listOfPeople(List<Person> list){
         StringBuilder result = new StringBuilder();
         for(Person person : list){
-            result.append(person.getName())
+            result.append("*")
+                    .append(person.getName())
+                    .append("*")
                     .append(":\nAktivován = ")
                     .append(clear(person.getActivated()))
                     .append("\nUpozornění = ")
                     .append(clear(person.getAvailNotif()))
-                    .append("\nKod = *")
+                    .append("\nKod = `")
                     .append(person.getCode())
-                    .append("*\n");
+                    .append("`\n");
         }
         return result.toString();
     }
     private String clear(Boolean element){
-        if(element) return "*ANO*";
-        else return  "*NE*";
+        if(element) return "`ANO`";
+        else return  "`NE`";
     }
 
 
