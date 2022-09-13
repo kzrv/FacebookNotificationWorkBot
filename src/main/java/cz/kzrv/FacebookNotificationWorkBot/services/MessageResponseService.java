@@ -40,19 +40,22 @@ public class MessageResponseService {
     public void sending(String recipient,String msg, MessageType type,StatesOfBot states){
         String URL = "https://graph.facebook.com/v14.0/me/messages?access_token="+token;
         MessageResponse messageResponse = new MessageResponse();
-        messageResponse.setRecipient(new Recipient(recipient));
-        messageResponse.setMessage(new MessageEvent(msg));
-        messageResponse.setType(type.name());
+        MessageEvent messageEvent = new MessageEvent();
         if(states!=null){
             if(states==StatesOfBot.DEFAULT){
-                messageResponse.setQuickReplies(defaultList());
+                messageEvent.setQuickReplies(defaultList());
             }
             else {
                 List<QuickReplies> list =new ArrayList<>();
                 list.add(quickReplie("/zpatky"));
-                messageResponse.setQuickReplies(list);
+                messageEvent.setQuickReplies(list);
             }
         }
+        messageEvent.setText(msg);
+        messageResponse.setRecipient(new Recipient(recipient));
+        messageResponse.setMessage(messageEvent);
+        messageResponse.setType(type.name());
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<MessageResponse> response = new HttpEntity<>(messageResponse,headers);

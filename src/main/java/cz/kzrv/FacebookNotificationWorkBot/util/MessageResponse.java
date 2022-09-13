@@ -19,8 +19,6 @@ public class MessageResponse {
     private Recipient recipient;
     private MessageEvent message;
     private String tag;
-    @JsonProperty("quick_replies")
-    private List<QuickReplies> quickReplies;
 
 
     public MessageResponse() {

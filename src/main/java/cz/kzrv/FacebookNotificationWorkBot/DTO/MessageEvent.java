@@ -1,12 +1,20 @@
 package cz.kzrv.FacebookNotificationWorkBot.DTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MessageEvent {
     private String mid; // id of message
     private String text;
     private Attachment attachment;
+    @JsonProperty("quick_replies")
+    private List<QuickReplies> quickReplies;
 
     public MessageEvent() {
     }
@@ -15,27 +23,4 @@ public class MessageEvent {
         this.text = text;
     }
 
-    public String getMid() {
-        return mid;
-    }
-
-    public void setMid(String mid) {
-        this.mid = mid;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Attachment getAttachment() {
-        return attachment;
-    }
-
-    public void setAttachment(Attachment attachment) {
-        this.attachment = attachment;
-    }
 }
