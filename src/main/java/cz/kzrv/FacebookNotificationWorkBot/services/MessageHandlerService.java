@@ -1,8 +1,9 @@
-package cz.kzrv.FacebookNotificationWorkBot.util;
+package cz.kzrv.FacebookNotificationWorkBot.services;
 
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
-import cz.kzrv.FacebookNotificationWorkBot.services.MessageResponseService;
-import cz.kzrv.FacebookNotificationWorkBot.services.PeopleService;
+import cz.kzrv.FacebookNotificationWorkBot.util.Generator;
+import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
+import cz.kzrv.FacebookNotificationWorkBot.util.StatesOfBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +45,10 @@ public class MessageHandlerService {
                 break;
             case "/help" :
                 String msg1 = "Příkazy: \n"+
-                        "/pridat - přidat nového člověka\n"+
-                        "/smazat - smazat osobu\n"+
-                        "/lide - seznam všech pracovníků";
+                        "*/pridat* - přidat nového člověka\n"+
+                        "*/smazat* - smazat osobu\n"+
+                        "*/lide* - seznam všech pracovníků\n"+
+                        "*/odkaz* - odkaz na stranku";
                 messageService.sending(person.getFacebookId(),
                         msg1,
                         MessageType.RESPONSE);
@@ -126,15 +128,17 @@ public class MessageHandlerService {
             result.append(person.getName())
                     .append(":\nAktivován = ")
                     .append(clear(person.getActivated()))
-                    .append("\nDostavá upozornění = ")
+                    .append("\nUpozornění = ")
                     .append(clear(person.getAvailNotif()))
-                    .append("\n");
+                    .append("\nKod = *")
+                    .append(person.getCode())
+                    .append("*\n");
         }
         return result.toString();
     }
     private String clear(Boolean element){
-        if(element) return "ANO";
-        else return  "NE";
+        if(element) return "*ANO*";
+        else return  "*NE*";
     }
 
 

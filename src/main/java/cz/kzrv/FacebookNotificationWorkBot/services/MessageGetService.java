@@ -1,7 +1,6 @@
 package cz.kzrv.FacebookNotificationWorkBot.services;
 
 import cz.kzrv.FacebookNotificationWorkBot.DTO.Optin;
-import cz.kzrv.FacebookNotificationWorkBot.util.MessageHandlerService;
 import cz.kzrv.FacebookNotificationWorkBot.util.StatesOfBot;
 import cz.kzrv.FacebookNotificationWorkBot.models.Message;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
