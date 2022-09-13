@@ -21,15 +21,15 @@ public class MessageHandlerService {
 
     public void getCommand(Person person, String msg) {
         switch (msg){
-            case "/add" :
+            case "/smazat" :
                     messageService.sending(
                             person.getFacebookId(),
-                            "Napiště prosím jméno človeka,ktereho chcete přídat(Stejně jako bude zapsan v tabulce)",
+                            "Napiště prosím jméno človeka,ktereho chcete přídat(stejně jako bude zapsan v tabulce)",
                             MessageType.RESPONSE);
                     person.setStatesOfBot(StatesOfBot.ADD_NEW_USER);
                     peopleService.save(person);
                     break;
-            case "/delete" :
+            case "/odebrat" :
                 messageService.sending(
                         person.getFacebookId(),
                         "Napiště prosím jméno človeka,ktereho chcete smazat(velkými písmeny)",
@@ -40,18 +40,19 @@ public class MessageHandlerService {
 
             case "/lide" :
                 List<Person> list = peopleService.getAllPeople();
-                messageService.sending(person.getFacebookId(),
-                        list.toString(),
-                        MessageType.RESPONSE);
+                messageService.fastResponse(listOfPeople(list),person.getFacebookId());
                 break;
             case "/help" :
                 String msg1 = "Příkazy: \n"+
-                        "/add - přidat nového člověka\n"+
-                        "/delete - smazat osobu\n"+
+                        "/pridat - přidat nového člověka\n"+
+                        "/smazat - smazat osobu\n"+
                         "/lide - seznam všech pracovníků";
                 messageService.sending(person.getFacebookId(),
                         msg1,
                         MessageType.RESPONSE);
+                break;
+            case "/odkaz" :
+                messageService.fastResponse("https://www.facebook.com/workbotfordellipizza", person.getFacebookId());
                 break;
             default :
                 messageService.sending(person.getFacebookId(),
@@ -110,7 +111,7 @@ public class MessageHandlerService {
                 );
                 break;
             case DEFAULT:
-                messageService.fastResponse("Neexistujicí příkaz, použijte prosím příkaz /help",person.getFacebookId());
+                messageService.fastResponse("Neexistujicí příkaz, použijte prosím /help",person.getFacebookId());
         }
 
     }
@@ -118,6 +119,22 @@ public class MessageHandlerService {
     private void save(Person person) {
         person.setStatesOfBot(StatesOfBot.DEFAULT);
         peopleService.save(person);
+    }
+    private String listOfPeople(List<Person> list){
+        StringBuilder result = new StringBuilder();
+        for(Person person : list){
+            result.append(person.getName())
+                    .append(":\nAktivován = ")
+                    .append(clear(person.getActivated()))
+                    .append("\nDostavá upozornění = ")
+                    .append(clear(person.getAvailNotif()))
+                    .append("\n");
+        }
+        return result.toString();
+    }
+    private String clear(Boolean element){
+        if(element) return "ANO";
+        else return  "NE";
     }
 
 

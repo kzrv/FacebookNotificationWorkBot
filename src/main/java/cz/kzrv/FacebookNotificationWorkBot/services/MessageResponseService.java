@@ -62,17 +62,36 @@ public class MessageResponseService {
         try {
             ResponseEntity<String> result = restTemplate.postForEntity(URL,entity,String.class);
             if(result.toString().contains("true")){
-                sending(person.getFacebookId(),message,MessageType.CONFIRMED_EVENT_UPDATE);
+                sendNotificationMessage(person.getFacebookId(),message);
             }
             else System.out.println("ERROR SEND NOTIFICATION");
         }
         catch (RestClientException e){
-            sending(person.getFacebookId(),message,MessageType.CONFIRMED_EVENT_UPDATE);
+            sendNotificationMessage(person.getFacebookId(),message);
         }
 
     }
     public void fastResponse(String msg,String recipient){
         sending(recipient,msg,MessageType.RESPONSE);
     }
+    public void sendNotificationMessage(String recipient,String message){
+        String URL = "https://graph.facebook.com/v14.0/me/messages?access_token="+token;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.setRecipient(new Recipient(recipient));
+        messageResponse.setType(MessageType.MESSAGE_TAG.name());
+        messageResponse.setTag(MessageType.CONFIRMED_EVENT_UPDATE.name());
+        messageResponse.setMessage(new MessageEvent(message));
+        HttpEntity<MessageResponse> httpEntity = new HttpEntity<>(messageResponse,headers);
+        try{
+            restTemplate.postForEntity(URL,httpEntity,String.class);
+
+        }catch (RestClientException e){
+            System.out.println("!!!!!!!!EXCEPTION WHILE SENDING RESPONSE!!!!!!!!!!");
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
+
 
 }

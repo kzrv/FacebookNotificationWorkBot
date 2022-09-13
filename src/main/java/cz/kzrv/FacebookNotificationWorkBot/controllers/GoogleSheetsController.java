@@ -28,7 +28,7 @@ public class GoogleSheetsController {
         return "OK";
     }
     @GetMapping("ping1")
-    public String getSpreadsheetValues1() throws IOException, GeneralSecurityException {
+    public String getSpreadsheetValues1() {
         tomorrowService.sendNotificationForTomorrow();
         return "OK";
     }

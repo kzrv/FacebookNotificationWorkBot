@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 public class Generator {
     public static String uniqueCode(String msg){
-        StringBuilder string = new StringBuilder();
-        string.append(randomWord())
-                .append(randomWord())
-                .append(msg)
-                .append(randomWord())
-                .append(randomWord())
-                .append(randomWord());
-        return string.toString();
+        return randomWord() +
+                randomWord() +
+                msg +
+                randomWord() +
+                randomWord() +
+                randomWord();
     }
     private static String randomWord(){
         ArrayList<String> alphaNum = new ArrayList<String>();

@@ -21,8 +21,7 @@ public class PeopleService {
         this.peopleRepository = peopleRepository;
     }
     public boolean checkToken(String tokenCheck){
-        if (token.equals(tokenCheck)) return true;
-        return false;
+        return token.equals(tokenCheck);
     }
     public Person findByName(String name){
         return peopleRepository.findByName(name);

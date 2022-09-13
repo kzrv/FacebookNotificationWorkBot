@@ -50,9 +50,11 @@ public class TomorrowService {
                     for(TomorrowShift shiftCheck : list1){
                         timeTable = shiftCheck.getTimeTable();
                         if(!timeTable.getBegin().equals("DELENA")) {
-                            msg += " a ještě od " +
+                            msg += " a ještě jako "+ timeTable.getTitle()+" od " +
                                     timeTable.getBegin() +
                                     " do " + timeTable.getEnd();
+                        } else {
+                            msg+=" a ještě směnu jako "+ timeTable.getTitle();
                         }
                     }
                 }
