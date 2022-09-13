@@ -1,11 +1,13 @@
 package cz.kzrv.FacebookNotificationWorkBot.services;
 
 import cz.kzrv.FacebookNotificationWorkBot.DTO.MessageEvent;
+import cz.kzrv.FacebookNotificationWorkBot.DTO.QuickReplies;
 import cz.kzrv.FacebookNotificationWorkBot.DTO.user.Recipient;
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.util.FollowingMessageResponse;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageResponse;
 import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
+import cz.kzrv.FacebookNotificationWorkBot.util.StatesOfBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -16,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -32,12 +37,22 @@ public class MessageResponseService {
     }
 
 
-    public void sending(String recipient,String msg, MessageType type){
+    public void sending(String recipient,String msg, MessageType type,StatesOfBot states){
         String URL = "https://graph.facebook.com/v14.0/me/messages?access_token="+token;
         MessageResponse messageResponse = new MessageResponse();
         messageResponse.setRecipient(new Recipient(recipient));
         messageResponse.setMessage(new MessageEvent(msg));
         messageResponse.setType(type.name());
+        if(states!=null){
+            if(states==StatesOfBot.DEFAULT){
+                messageResponse.setQuickReplies(defaultList());
+            }
+            else {
+                List<QuickReplies> list =new ArrayList<>();
+                list.add(quickReplie("/zpatky"));
+                messageResponse.setQuickReplies(list);
+            }
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<MessageResponse> response = new HttpEntity<>(messageResponse,headers);
@@ -72,9 +87,12 @@ public class MessageResponseService {
 
     }
     public void fastResponse(String msg,String recipient){
-        sending(recipient,msg,MessageType.RESPONSE);
+        sending(recipient,msg,MessageType.RESPONSE,null);
     }
-    public void sendNotificationMessage(String recipient,String message){
+    public void fastResponseWithReplies(String msg, Person person){
+        sending(person.getFacebookId(),msg,MessageType.RESPONSE,person.getStatesOfBot());
+    }
+    private void sendNotificationMessage(String recipient,String message){
         String URL = "https://graph.facebook.com/v14.0/me/messages?access_token="+token;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -91,6 +109,22 @@ public class MessageResponseService {
             System.out.println("!!!!!!!!EXCEPTION WHILE SENDING RESPONSE!!!!!!!!!!");
             System.out.println(e.getLocalizedMessage());
         }
+    }
+    private QuickReplies quickReplie(String title){
+        QuickReplies quickReplies = new QuickReplies();
+        quickReplies.setContentType("text");
+        quickReplies.setPayload(title);
+        quickReplies.setTitle(title);
+        return quickReplies;
+    }
+    private List<QuickReplies> defaultList(){
+        List<QuickReplies> list = new ArrayList<>();
+        list.add(quickReplie("/pridat"));
+        list.add(quickReplie("/smazat"));
+        list.add(quickReplie("/lide"));
+        list.add(quickReplie("/odkaz"));
+        list.add(quickReplie("/help"));
+        return list;
     }
 
 
