@@ -1,18 +1,19 @@
 package cz.kzrv.FacebookNotificationWorkBot.services;
 
-import cz.kzrv.FacebookNotificationWorkBot.DTO.Attachment;
-import cz.kzrv.FacebookNotificationWorkBot.DTO.MessageDailyRequest;
-import cz.kzrv.FacebookNotificationWorkBot.DTO.MessageEvent;
-import cz.kzrv.FacebookNotificationWorkBot.DTO.Payload;
+import cz.kzrv.FacebookNotificationWorkBot.DTO.*;
 import cz.kzrv.FacebookNotificationWorkBot.DTO.user.Recipient;
+import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Service
 public class MessageDailyRequestService {
@@ -20,10 +21,12 @@ public class MessageDailyRequestService {
 
     @Value("${bot.token}")
     private String token;
+    private final PeopleService peopleService;
 
     @Autowired
-    public MessageDailyRequestService(RestTemplate restTemplate) {
+    public MessageDailyRequestService(RestTemplate restTemplate, PeopleService peopleService) {
         this.restTemplate = restTemplate;
+        this.peopleService = peopleService;
     }
 
     public void execute(String id){
@@ -50,6 +53,24 @@ public class MessageDailyRequestService {
         }catch (RestClientException e){
             System.out.println("!!!!!!!!EXCEPTION WHILE SENDING REQUEST!!!!!!!!!!");
             System.out.println(e.getLocalizedMessage());
+        }
+    }
+    @Scheduled(cron = "${one_a_day_before}")
+    public void checkTokens(){
+        List<Person> list = peopleService.getAllPeople();
+        for(Person person : list){
+            if(person.getActivated() && person.getAvailNotif()){
+                String URL = "https://graph.facebook.com/v14.0/notification_messages_"+person.getToken()+"?access_token="+token;
+                TokenInfo tokenInfo = restTemplate.getForEntity(URL, TokenInfo.class).getBody();
+                if(tokenInfo!=null && tokenInfo.getEndOfToken()!=null){
+                    long time = Long.parseLong(tokenInfo.getEndOfToken());
+                    long currentTime = System.currentTimeMillis();
+                    if(time-currentTime<0){
+                        person.setAvailNotif(false);
+                        peopleService.save(person);
+                    }
+                }
+            }
         }
     }
 }

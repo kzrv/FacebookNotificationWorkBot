@@ -117,14 +117,16 @@ public class MessageHandlerService {
     private String listOfPeople(List<Person> list){
         StringBuilder result = new StringBuilder();
         for(Person person : list){
-            result.append(person.getName())
+            result.append("---------------")
+                    .append(person.getName())
                     .append(":\nAktivován = ")
                     .append(clear(person.getActivated()))
                     .append("\nUpozornění = ")
                     .append(clear(person.getAvailNotif()))
                     .append("\nKod = ")
                     .append(person.getCode())
-                    .append("\n");
+                    .append("\n")
+                    .append("---------------");
         }
         return result.toString();
     }
