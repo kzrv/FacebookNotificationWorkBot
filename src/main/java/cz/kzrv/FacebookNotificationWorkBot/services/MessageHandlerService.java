@@ -2,7 +2,6 @@ package cz.kzrv.FacebookNotificationWorkBot.services;
 
 import cz.kzrv.FacebookNotificationWorkBot.models.Person;
 import cz.kzrv.FacebookNotificationWorkBot.util.Generator;
-import cz.kzrv.FacebookNotificationWorkBot.util.MessageType;
 import cz.kzrv.FacebookNotificationWorkBot.util.StatesOfBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,11 +40,11 @@ public class MessageHandlerService {
                 messageService.fastResponseWithReplies(listOfPeople(list),person);
                 break;
             case "/help" :
-                String msg1 = "`Příkazy:` \n"+
-                        "*/pridat* - `přidat nového člověka`\n"+
-                        "*/smazat* - `smazat osobu`\n"+
-                        "*/lide* - `seznam všech pracovníků`\n"+
-                        "*/odkaz* - `odkaz na stranku`";
+                String msg1 = "Příkazy: \n"+
+                        "/pridat - přidat nového člověka\n"+
+                        "/smazat - smazat osobu\n"+
+                        "/lide - seznam všech pracovníků\n"+
+                        "/odkaz - odkaz na stranku";
                 messageService.fastResponseWithReplies(msg1,person);
                 break;
             case "/odkaz" :
@@ -72,6 +71,7 @@ public class MessageHandlerService {
                     personNew.setCode(Generator.uniqueCode(msg));
                     personNew.setName(msg);
                     personNew.setStatesOfBot(StatesOfBot.DEFAULT);
+                    personNew.setAvailNotif(false);
                     save(person);
                     messageService.fastResponse(
                             "Uživatel byl úspěšně přidán\n" +
@@ -117,22 +117,20 @@ public class MessageHandlerService {
     private String listOfPeople(List<Person> list){
         StringBuilder result = new StringBuilder();
         for(Person person : list){
-            result.append("*")
-                    .append(person.getName())
-                    .append("*")
+            result.append(person.getName())
                     .append(":\nAktivován = ")
                     .append(clear(person.getActivated()))
                     .append("\nUpozornění = ")
                     .append(clear(person.getAvailNotif()))
-                    .append("\nKod = `")
+                    .append("\nKod = ")
                     .append(person.getCode())
-                    .append("`\n");
+                    .append("\n");
         }
         return result.toString();
     }
     private String clear(Boolean element){
-        if(element) return "`ANO`";
-        else return  "`NE`";
+        if(element) return "ANO";
+        else return  "NE";
     }
 
 
