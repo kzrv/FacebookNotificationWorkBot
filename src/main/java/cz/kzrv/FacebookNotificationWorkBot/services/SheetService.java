@@ -38,7 +38,6 @@ public class SheetService {
         this.tomorrowService = tomorrowService;
     }
     @Scheduled(cron = "${one_a_day}")
-    @Scheduled(cron = "${one_a_day_2}")
     public void getTomorrowShifts() throws IOException, GeneralSecurityException {
         Sheets sheetsService = googleAuthorizationConfig.getSheetService();
         tomorrowService.deleteAll();
@@ -73,8 +72,8 @@ public class SheetService {
         String[] split = formatter.format(localDate.plusDays(plus)).split("/");
         int day = Integer.parseInt(split[0])+ rowOfDate;
         int month = Integer.parseInt(split[1]);
-//        String currenMonth = Month.getMonthName(month);
-        String currenMonth = "work";
+        String currenMonth = Month.getMonthName(month);
+//        String currenMonth = "work";
         return currenMonth+"!B"+day+":O"+day;
     }
 }

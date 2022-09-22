@@ -124,7 +124,7 @@ public class MessageHandlerService {
                     .append(clear(person.getAvailNotif()))
                     .append("\nKod = ")
                     .append(person.getCode())
-                    .append("\n-----------------\n");
+                    .append("\n--------------------\n");
 
         }
         return result.toString();
