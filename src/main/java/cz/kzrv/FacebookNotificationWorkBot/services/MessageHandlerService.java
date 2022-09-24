@@ -127,9 +127,10 @@ public class MessageHandlerService {
                     .append(person.getCode())
                     .append("\n--------------------\n");
             i++;
-            if(i==10 || person==list.get(list.size()-1)){
+            if(i==9 || person==list.get(list.size()-1)){
                 messageService.fastResponseWithReplies(result.toString(), people);
                 i=0;
+                result = new StringBuilder();
             }
         }
     }
