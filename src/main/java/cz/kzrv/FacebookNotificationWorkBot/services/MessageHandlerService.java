@@ -37,7 +37,7 @@ public class MessageHandlerService {
 
             case "/lide" :
                 List<Person> list = peopleService.getAllPeople();
-                messageService.fastResponseWithReplies(listOfPeople(list),person);
+                listOfPeople(list,person);
                 break;
             case "/help" :
                 String msg1 = "Příkazy: \n"+
@@ -114,8 +114,9 @@ public class MessageHandlerService {
         person.setStatesOfBot(StatesOfBot.DEFAULT);
         peopleService.save(person);
     }
-    private String listOfPeople(List<Person> list){
+    private void listOfPeople(List<Person> list,Person people){
         StringBuilder result = new StringBuilder();
+        int i=0;
         for(Person person : list){
             result  .append(person.getName())
                     .append(":\nAktivován = ")
@@ -125,9 +126,12 @@ public class MessageHandlerService {
                     .append("\nKod = ")
                     .append(person.getCode())
                     .append("\n--------------------\n");
-
+            i++;
+            if(i==10 || person==list.get(list.size()-1)){
+                messageService.fastResponseWithReplies(result.toString(), people);
+                i=0;
+            }
         }
-        return result.toString();
     }
     private String clear(Boolean element){
         if(element) return "ANO";
